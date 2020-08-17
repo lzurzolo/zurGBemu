@@ -37,9 +37,10 @@ public:
 private:
     void HandleInstruction(uint8_t instruction);
     void NOP();
+    void LDrn(uint8_t& r);
     void LDrr(uint8_t& r1, uint8_t& r2);
-    void LDrr(uint8_t& r1, uint8_t& r2msb, uint8_t& r2lsb);
-
+    void LDrHL(uint8_t& r);
+    void LDHLr(uint8_t& r);
 
     Registers registers{};
     Memory* memory;
