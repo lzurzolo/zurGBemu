@@ -4,8 +4,8 @@
 
 int main()
 {
-    CPU cpu;
     Memory memory;
+    CPU cpu{&memory};
     auto romData = LoadRomFromFile("tetris.gb");
     if(romData.empty())
     {
@@ -16,10 +16,6 @@ int main()
         cpu.Reset();
         memory.Reset();
         memory.SetRomIntoMemory(romData);
-
-        for(uint16_t i = 0x0000; i < 0x8000; i++)
-        {
-            std::cout << memory.Read(i) << std::endl;
-        }
+        while(1) cpu.Step();
     }
 }

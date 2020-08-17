@@ -114,7 +114,7 @@ void Memory::Reset()
     Write(0xFF49, 0xFF);
     Write(0xFF4A, 0x00);
     Write(0xFF4B, 0x00);
-    Write(0xFFFF, 0x00);
+    Write(INTERRUPT_ENABLE_REGISTER, 0x00);
 }
 
 
