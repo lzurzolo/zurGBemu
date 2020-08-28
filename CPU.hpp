@@ -35,12 +35,39 @@ public:
     void Step();
 
 private:
+    uint16_t AF() {return (uint16_t)(registers.a << 8) | registers.f;}
+    uint16_t BC() {return (uint16_t)(registers.b << 8) | registers.c;}
+    uint16_t DE() {return (uint16_t)(registers.d << 8) | registers.e;}
+    uint16_t HL() {return (uint16_t)(registers.h << 8) | registers.l;}
+
+    void SetBC(uint16_t bc);
+    void SetDE(uint16_t de);
+    void SetHL(uint16_t hl);
+    void SetSP(uint16_t sp);
+
     void HandleInstruction(uint8_t instruction);
     void NOP();
     void LDrn(uint8_t& r);
     void LDrr(uint8_t& r1, uint8_t& r2);
     void LDrHL(uint8_t& r);
     void LDHLr(uint8_t& r);
+    void LDAn(uint8_t& r1);
+    void LDAn(uint16_t addr);
+    void LDnA(uint8_t& r);
+    void LDnA(uint16_t addr);
+    void LDAC();
+    void LDCA();
+    void LDAHLdec();
+    void LDAHLinc();
+    void LDHLAdec();
+    void LDHLAinc();
+    void LDHnA(uint8_t n);
+    void LDHAn(uint8_t n);
+    void LDBCnn(uint16_t i);
+    void LDDEnn(uint16_t i);
+    void LDHLnn(uint16_t i);
+    void LDSPnn(uint16_t i);
+    void LDSPHL();
 
     Registers registers{};
     Memory* memory;
