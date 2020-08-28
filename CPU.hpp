@@ -68,6 +68,9 @@ private:
     void LDHLnn(uint16_t i);
     void LDSPnn(uint16_t i);
     void LDSPHL();
+    void LDHLSPn(uint8_t n);
+    void LDnnSP(uint16_t nn);
+    void Push(uint16_t nn);
 
     Registers registers{};
     Memory* memory;

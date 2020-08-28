@@ -193,6 +193,18 @@ void CPU::HandleInstruction(uint8_t instruction)
         LDSPnn(immediate);
     }
     else if(instruction == 0xF9) LDSPHL();
+    else if(instruction == 0xF8) LDHLSPn(registers.pc++);
+    else if(instruction == 0x08)
+    {
+        uint8_t lsb = registers.pc++;
+        uint8_t msb = registers.pc++;
+        uint16_t address = (uint16_t)(lsb << 8) | msb;
+        LDnnSP(address);
+    }
+    else if(instruction == 0xF5) Push(AF());
+    else if(instruction == 0xC5) Push(BC());
+    else if(instruction == 0xD5) Push(DE());
+    else if(instruction == 0xE5) Push(HL());
 
 
 }
@@ -349,6 +361,23 @@ void CPU::LDSPnn(uint16_t i)
 void CPU::LDSPHL()
 {
     registers.sp = HL();
+}
+
+void CPU::LDHLSPn(uint8_t n)
+{
+    uint16_t addr = registers.sp + n;
+    SetSP(addr);
+}
+
+void CPU::LDnnSP(uint16_t nn)
+{
+    registers.sp = nn;
+}
+
+void CPU::Push(uint16_t nn)
+{
+
+
 }
 
 
