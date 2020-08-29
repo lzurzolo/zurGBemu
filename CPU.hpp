@@ -71,6 +71,11 @@ private:
     void LDHLSPn(uint8_t n);
     void LDnnSP(uint16_t nn);
     void Push(uint16_t nn);
+    void PopAF();
+    void PopBC();
+    void PopDE();
+    void PopHL();
+    void Add(uint8_t n);
 
     Registers registers{};
     Memory* memory;

@@ -205,8 +205,19 @@ void CPU::HandleInstruction(uint8_t instruction)
     else if(instruction == 0xC5) Push(BC());
     else if(instruction == 0xD5) Push(DE());
     else if(instruction == 0xE5) Push(HL());
-
-
+    else if(instruction == 0xF1) PopAF();
+    else if(instruction == 0xC1) PopBC();
+    else if(instruction == 0xD1) PopDE();
+    else if(instruction == 0xE1) PopHL();
+    else if(instruction == 0x87) Add(registers.a);
+    else if(instruction == 0x80) Add(registers.b);
+    else if(instruction == 0x81) Add(registers.c);
+    else if(instruction == 0x82) Add(registers.d);
+    else if(instruction == 0x83) Add(registers.e);
+    else if(instruction == 0x84) Add(registers.h);
+    else if(instruction == 0x85) Add(registers.l);
+    else if(instruction == 0x86) Add(memory->Read(HL()));
+    else if(instruction == 0xC6) Add(registers.pc++);
 }
 
 void CPU::NOP()
@@ -376,8 +387,40 @@ void CPU::LDnnSP(uint16_t nn)
 
 void CPU::Push(uint16_t nn)
 {
+    registers.sp--;
+    uint8_t msb = (uint8_t) nn >> 8;
+    uint8_t lsb = (uint8_t) nn;
+    memory->Write(registers.sp--, msb);
+    memory->Write(registers.sp--, lsb);
+}
 
+void CPU::PopAF()
+{
+    registers.a = memory->Read(registers.sp++);
+    registers.f = memory->Read(registers.sp++);
+}
 
+void CPU::PopBC()
+{
+    registers.b = memory->Read(registers.sp++);
+    registers.c = memory->Read(registers.sp++);
+}
+
+void CPU::PopDE()
+{
+    registers.d = memory->Read(registers.sp++);
+    registers.e = memory->Read(registers.sp++);
+}
+
+void CPU::PopHL()
+{
+    registers.h = memory->Read(registers.sp++);
+    registers.l = memory->Read(registers.sp++);
+}
+
+void CPU::Add(uint8_t n)
+{
+    registers.a += n;
 }
 
 
