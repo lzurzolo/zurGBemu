@@ -6,6 +6,8 @@
 #define ZURGBEMU_CPU_HPP
 #include <cstdint>
 #include <iostream>
+#include <functional>
+#include <map>
 #include "Memory.hpp"
 
 struct Registers
@@ -35,6 +37,10 @@ public:
     void Step();
 
 private:
+    std::map<uint8_t, std::function<void(void)>> instructionTable;
+
+    void PopulateInstructionTable();
+
     uint16_t AF() {return (uint16_t)(registers.a << 8) | registers.f;}
     uint16_t BC() {return (uint16_t)(registers.b << 8) | registers.c;}
     uint16_t DE() {return (uint16_t)(registers.d << 8) | registers.e;}
@@ -76,6 +82,16 @@ private:
     void PopDE();
     void PopHL();
     void Add(uint8_t n);
+
+    void AddA();
+    void AddB();
+    void AddC();
+    void AddD();
+    void AddE();
+    void AddH();
+    void AddL();
+    void AddHL();
+    void AddImmediate();
 
     Registers registers{};
     Memory* memory;

@@ -8,10 +8,24 @@ CPU::CPU(Memory* m)
 : memory(m)
 {
     Reset();
+    PopulateInstructionTable();
 }
 
 CPU::~CPU()
 = default;
+
+void CPU::PopulateInstructionTable()
+{
+   instructionTable.insert(std::make_pair(0x80, std::bind(&CPU::AddB, this)));
+   instructionTable.insert(std::make_pair(0x81, std::bind(&CPU::AddC, this)));
+   instructionTable.insert(std::make_pair(0x82, std::bind(&CPU::AddD, this)));
+   instructionTable.insert(std::make_pair(0x83, std::bind(&CPU::AddE, this)));
+   instructionTable.insert(std::make_pair(0x84, std::bind(&CPU::AddH, this)));
+   instructionTable.insert(std::make_pair(0x85, std::bind(&CPU::AddL, this)));
+   instructionTable.insert(std::make_pair(0x86, std::bind(&CPU::AddHL, this)));
+   instructionTable.insert(std::make_pair(0x87, std::bind(&CPU::AddA, this)));
+   instructionTable.insert(std::make_pair(0xC6, std::bind(&CPU::AddImmediate, this)));
+}
 
 void CPU::Reset()
 {
@@ -34,6 +48,9 @@ void CPU::Step()
 
 void CPU::HandleInstruction(uint8_t instruction)
 {
+    instructionTable[0x81]();
+
+/*
     if(instruction == 0x00) NOP();
 
     else if(instruction == 0x06) LDrn(registers.b);
@@ -50,42 +67,42 @@ void CPU::HandleInstruction(uint8_t instruction)
     else if(instruction == 0x7B) LDrr(registers.a, registers.e);
     else if(instruction == 0x7C) LDrr(registers.a, registers.h);
     else if(instruction == 0x7D) LDrr(registers.a, registers.l);
-    else if(instruction == 0x7E) LDrHL(registers.a)
+    else if(instruction == 0x7E) LDrHL(registers.a);
     else if(instruction == 0x40) LDrr(registers.b, registers.b);
     else if(instruction == 0x41) LDrr(registers.b, registers.c);
     else if(instruction == 0x42) LDrr(registers.b, registers.d);
     else if(instruction == 0x43) LDrr(registers.b, registers.e);
     else if(instruction == 0x44) LDrr(registers.b, registers.h);
     else if(instruction == 0x45) LDrr(registers.b, registers.l);
-    else if(instruction == 0x46) LDrHL(registers.b)
+    else if(instruction == 0x46) LDrHL(registers.b);
     else if(instruction == 0x48) LDrr(registers.c, registers.b);
     else if(instruction == 0x49) LDrr(registers.c, registers.c);
     else if(instruction == 0x4A) LDrr(registers.c, registers.d);
     else if(instruction == 0x4B) LDrr(registers.c, registers.e);
     else if(instruction == 0x4C) LDrr(registers.c, registers.h);
     else if(instruction == 0x4D) LDrr(registers.c, registers.l);
-    else if(instruction == 0x4E) LDrHL(registers.c)
+    else if(instruction == 0x4E) LDrHL(registers.c);
     else if(instruction == 0x50) LDrr(registers.d, registers.b);
     else if(instruction == 0x51) LDrr(registers.d, registers.c);
     else if(instruction == 0x52) LDrr(registers.d, registers.d);
     else if(instruction == 0x53) LDrr(registers.d, registers.e);
     else if(instruction == 0x54) LDrr(registers.d, registers.h);
     else if(instruction == 0x55) LDrr(registers.d, registers.l);
-    else if(instruction == 0x56) LDrHL(registers.d)
+    else if(instruction == 0x56) LDrHL(registers.d);
     else if(instruction == 0x58) LDrr(registers.e, registers.b);
     else if(instruction == 0x59) LDrr(registers.e, registers.c);
     else if(instruction == 0x5A) LDrr(registers.e, registers.d);
     else if(instruction == 0x5B) LDrr(registers.e, registers.e);
     else if(instruction == 0x5C) LDrr(registers.e, registers.h);
     else if(instruction == 0x5D) LDrr(registers.e, registers.l);
-    else if(instruction == 0x5E) LDrHL(registers.e)
+    else if(instruction == 0x5E) LDrHL(registers.e);
     else if(instruction == 0x60) LDrr(registers.h, registers.b);
     else if(instruction == 0x61) LDrr(registers.h, registers.c);
     else if(instruction == 0x62) LDrr(registers.h, registers.d);
     else if(instruction == 0x63) LDrr(registers.h, registers.e);
     else if(instruction == 0x64) LDrr(registers.h, registers.h);
     else if(instruction == 0x65) LDrr(registers.h, registers.l);
-    else if(instruction == 0x66) LDrHL(registers.h)
+    else if(instruction == 0x66) LDrHL(registers.h);
     else if(instruction == 0x68) LDrr(registers.l, registers.b);
     else if(instruction == 0x69) LDrr(registers.l, registers.c);
     else if(instruction == 0x6A) LDrr(registers.l, registers.d);
@@ -218,6 +235,7 @@ void CPU::HandleInstruction(uint8_t instruction)
     else if(instruction == 0x85) Add(registers.l);
     else if(instruction == 0x86) Add(memory->Read(HL()));
     else if(instruction == 0xC6) Add(registers.pc++);
+    */
 }
 
 void CPU::NOP()
@@ -423,12 +441,55 @@ void CPU::Add(uint8_t n)
     registers.a += n;
 }
 
+void CPU::AddA()
+{
+    std::cout << "Add A" << std::endl;
+    registers.a += registers.a;
+}
 
+void CPU::AddB()
+{
+    std::cout << "Add B" << std::endl;
+    registers.a += registers.b;
+}
 
+void CPU::AddC()
+{
+    std::cout << "Add C" << std::endl;
+    registers.a += registers.c;
+}
 
+void CPU::AddD()
+{
+    std::cout << "Add D" << std::endl;
+    registers.a += registers.d;
+}
 
+void CPU::AddE()
+{
+    std::cout << "Add E" << std::endl;
+    registers.a += registers.e;
+}
 
+void CPU::AddH()
+{
+    std::cout << "Add H" << std::endl;
+    registers.a += registers.f;
+}
 
+void CPU::AddL()
+{
+    std::cout << "Add L" << std::endl;
+    registers.a += registers.l;
+}
 
+void CPU::AddHL()
+{
+    registers.a += memory->Read(HL());
+}
 
+void CPU::AddImmediate()
+{
+    registers.a += registers.pc++;
+}
 
