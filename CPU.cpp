@@ -8,23 +8,24 @@ CPU::CPU(Memory* m)
 : memory(m)
 {
     Reset();
-    PopulateInstructionTable();
+    PopulateDispatchTable();
 }
 
 CPU::~CPU()
 = default;
 
-void CPU::PopulateInstructionTable()
+void CPU::PopulateDispatchTable()
 {
-   instructionTable.insert(std::make_pair(0x80, std::bind(&CPU::AddB, this)));
-   instructionTable.insert(std::make_pair(0x81, std::bind(&CPU::AddC, this)));
-   instructionTable.insert(std::make_pair(0x82, std::bind(&CPU::AddD, this)));
-   instructionTable.insert(std::make_pair(0x83, std::bind(&CPU::AddE, this)));
-   instructionTable.insert(std::make_pair(0x84, std::bind(&CPU::AddH, this)));
-   instructionTable.insert(std::make_pair(0x85, std::bind(&CPU::AddL, this)));
-   instructionTable.insert(std::make_pair(0x86, std::bind(&CPU::AddHL, this)));
-   instructionTable.insert(std::make_pair(0x87, std::bind(&CPU::AddA, this)));
-   instructionTable.insert(std::make_pair(0xC6, std::bind(&CPU::AddImmediate, this)));
+   dispatchTable.insert(std::make_pair(0x80, std::bind(&CPU::AddB, this)));
+   dispatchTable.insert(std::make_pair(0x81, std::bind(&CPU::AddC, this)));
+   dispatchTable.insert(std::make_pair(0x82, std::bind(&CPU::AddD, this)));
+   dispatchTable.insert(std::make_pair(0x83, std::bind(&CPU::AddE, this)));
+   dispatchTable.insert(std::make_pair(0x84, std::bind(&CPU::AddH, this)));
+   dispatchTable.insert(std::make_pair(0x85, std::bind(&CPU::AddL, this)));
+   dispatchTable.insert(std::make_pair(0x86, std::bind(&CPU::AddHL, this)));
+   dispatchTable.insert(std::make_pair(0x87, std::bind(&CPU::AddA, this)));
+   dispatchTable.insert(std::make_pair(0xC6, std::bind(&CPU::AddImmediate, this)));
+   dispatchTable.insert(std::make_pair(0x00, std::bind(&CPU::NOP, this)));
 }
 
 void CPU::Reset()
@@ -42,17 +43,21 @@ void CPU::Reset()
 }
 
 void CPU::Step()
-{
+{ 
     HandleInstruction(memory->Read(registers.pc++));
 }
 
 void CPU::HandleInstruction(uint8_t instruction)
 {
-    instructionTable[0x81]();
+    if (dispatchTable.find(instruction) == dispatchTable.end()) 
+    {
 
+    }
+    else 
+    {
+        dispatchTable[instruction]();
+    }
 /*
-    if(instruction == 0x00) NOP();
-
     else if(instruction == 0x06) LDrn(registers.b);
     else if(instruction == 0x0E) LDrn(registers.c);
     else if(instruction == 0x16) LDrn(registers.d);
@@ -226,21 +231,13 @@ void CPU::HandleInstruction(uint8_t instruction)
     else if(instruction == 0xC1) PopBC();
     else if(instruction == 0xD1) PopDE();
     else if(instruction == 0xE1) PopHL();
-    else if(instruction == 0x87) Add(registers.a);
-    else if(instruction == 0x80) Add(registers.b);
-    else if(instruction == 0x81) Add(registers.c);
-    else if(instruction == 0x82) Add(registers.d);
-    else if(instruction == 0x83) Add(registers.e);
-    else if(instruction == 0x84) Add(registers.h);
-    else if(instruction == 0x85) Add(registers.l);
-    else if(instruction == 0x86) Add(memory->Read(HL()));
-    else if(instruction == 0xC6) Add(registers.pc++);
     */
 }
 
 void CPU::NOP()
 {
-
+    DEBUG("0x00 NOP");
+    DEBUG(" ");
 }
 
 void CPU::LDrn(uint8_t &r)
@@ -436,60 +433,126 @@ void CPU::PopHL()
     registers.l = memory->Read(registers.sp++);
 }
 
-void CPU::Add(uint8_t n)
-{
-    registers.a += n;
-}
-
 void CPU::AddA()
 {
-    std::cout << "Add A" << std::endl;
+    DEBUG("0x87 ADD A,A");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
     registers.a += registers.a;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
 }
 
 void CPU::AddB()
 {
-    std::cout << "Add B" << std::endl;
+    DEBUG("0x80 ADD A,B");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register B");
+    DEBUG_PRINT_REGISTER(registers.b);
     registers.a += registers.b;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
 }
 
 void CPU::AddC()
 {
-    std::cout << "Add C" << std::endl;
+    DEBUG("0x81 ADD A,C");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register C");
+    DEBUG_PRINT_REGISTER(registers.c);
     registers.a += registers.c;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
 }
 
 void CPU::AddD()
 {
-    std::cout << "Add D" << std::endl;
+    DEBUG("0x82 ADD A,D");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register D");
+    DEBUG_PRINT_REGISTER(registers.d);
     registers.a += registers.d;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
 }
 
 void CPU::AddE()
 {
-    std::cout << "Add E" << std::endl;
+    DEBUG("0x83 ADD A,E");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register E");
+    DEBUG_PRINT_REGISTER(registers.e);
     registers.a += registers.e;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
 }
 
 void CPU::AddH()
 {
-    std::cout << "Add H" << std::endl;
-    registers.a += registers.f;
+    DEBUG("0x84 ADD A,H");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register H");
+    DEBUG_PRINT_REGISTER(registers.h);
+    registers.a += registers.h;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
 }
 
 void CPU::AddL()
 {
-    std::cout << "Add L" << std::endl;
+    DEBUG("0x85 ADD A,L");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register L");
+    DEBUG_PRINT_REGISTER(registers.l);
     registers.a += registers.l;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
 }
 
 void CPU::AddHL()
 {
+    DEBUG("0x86 ADD A,(HL)");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register H");
+    DEBUG_PRINT_REGISTER(registers.h);
+    DEBUG("Register L");
+    DEBUG_PRINT_REGISTER(registers.l);
+    DEBUG("Register HL");
+    DEBUG_PRINT_REGISTER(HL());
+    DEBUG("Value at (HL)");
+    DEBUG_PRINT_REGISTER(memory->Read(HL()));
     registers.a += memory->Read(HL());
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
 }
 
 void CPU::AddImmediate()
 {
+    DEBUG("0xC6 ADD A,#");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
     registers.a += registers.pc++;
+    DEBUG("OPERAND");
+    DEBUG_PRINT_REGISTER(registers.pc);
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
 }
 

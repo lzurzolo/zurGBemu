@@ -9,6 +9,7 @@
 #include <functional>
 #include <map>
 #include "Memory.hpp"
+#include "zurDebug.hpp"
 
 struct Registers
 {
@@ -37,9 +38,9 @@ public:
     void Step();
 
 private:
-    std::map<uint8_t, std::function<void(void)>> instructionTable;
+    std::map<uint8_t, std::function<void(void)>> dispatchTable;
 
-    void PopulateInstructionTable();
+    void PopulateDispatchTable();
 
     uint16_t AF() {return (uint16_t)(registers.a << 8) | registers.f;}
     uint16_t BC() {return (uint16_t)(registers.b << 8) | registers.c;}
@@ -81,7 +82,6 @@ private:
     void PopBC();
     void PopDE();
     void PopHL();
-    void Add(uint8_t n);
 
     void AddA();
     void AddB();
