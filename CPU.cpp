@@ -28,6 +28,46 @@ void CPU::PopulateDispatchTable()
    dispatchTable.insert(std::make_pair(0x00, std::bind(&CPU::NOP, this)));
 }
 
+void CPU::SetZeroFlag()
+{
+    registers.f |= 0b10000000;
+}
+
+void CPU::ClearZeroFlag()
+{
+    registers.f &= ~0b10000000;
+}
+
+void CPU::SetSubtractFlag()
+{
+    registers.f |= 0b01000000;
+}
+
+void CPU::ClearSubtractFlag()
+{
+    registers.f &= ~0b01000000;
+}
+
+void CPU::SetHalfCarryFlag()
+{
+    registers.f |= 0b00100000;
+}
+
+void CPU::ClearHalfCarryFlag()
+{
+    registers.f &= ~0b00100000;
+}
+
+void CPU::SetCarryFlag()
+{
+    registers.f |= 0b00010000;
+}
+
+void CPU::ClearCarryFlag()
+{
+    registers.f &= ~0b00010000;
+}
+
 void CPU::Reset()
 {
     registers.a = 0x01;
@@ -444,6 +484,9 @@ void CPU::AddA()
     DEBUG("Result");
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG(" ");
+
+    if(registers.a == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
 }
 
 void CPU::AddB()
@@ -457,6 +500,9 @@ void CPU::AddB()
     DEBUG("Result");
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG(" ");
+
+    if(registers.a == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
 }
 
 void CPU::AddC()
@@ -470,6 +516,9 @@ void CPU::AddC()
     DEBUG("Result");
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG(" ");
+
+    if(registers.a == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
 }
 
 void CPU::AddD()
@@ -483,6 +532,9 @@ void CPU::AddD()
     DEBUG("Result");
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG(" ");
+
+    if(registers.a == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
 }
 
 void CPU::AddE()
@@ -496,6 +548,9 @@ void CPU::AddE()
     DEBUG("Result");
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG(" ");
+
+    if(registers.a == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
 }
 
 void CPU::AddH()
@@ -509,6 +564,9 @@ void CPU::AddH()
     DEBUG("Result");
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG(" ");
+
+    if(registers.a == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
 }
 
 void CPU::AddL()
@@ -522,6 +580,9 @@ void CPU::AddL()
     DEBUG("Result");
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG(" ");
+
+    if(registers.a == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
 }
 
 void CPU::AddHL()
@@ -541,6 +602,9 @@ void CPU::AddHL()
     DEBUG("Result");
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG(" ");
+
+    if(registers.a == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
 }
 
 void CPU::AddImmediate()
@@ -554,5 +618,7 @@ void CPU::AddImmediate()
     DEBUG("Result");
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG(" ");
-}
 
+    if(registers.a == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+}

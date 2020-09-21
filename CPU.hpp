@@ -42,6 +42,18 @@ private:
 
     void PopulateDispatchTable();
 
+    void SetZeroFlag();
+    void UnsetZeroFlag();
+
+    void SetSubtractFlag();
+    void UnsetSubtractFlag();
+
+    void SetHalfCarryFlag();
+    void UnsetHalfCarryFlag();
+
+    void SetCarryFlag();
+    void UnsetCarryFlag();
+
     uint16_t AF() {return (uint16_t)(registers.a << 8) | registers.f;}
     uint16_t BC() {return (uint16_t)(registers.b << 8) | registers.c;}
     uint16_t DE() {return (uint16_t)(registers.d << 8) | registers.e;}
