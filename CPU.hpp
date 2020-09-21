@@ -43,16 +43,16 @@ private:
     void PopulateDispatchTable();
 
     void SetZeroFlag();
-    void UnsetZeroFlag();
+    void ClearZeroFlag();
 
     void SetSubtractFlag();
-    void UnsetSubtractFlag();
+    void ClearSubtractFlag();
 
     void SetHalfCarryFlag();
-    void UnsetHalfCarryFlag();
+    void ClearHalfCarryFlag();
 
     void SetCarryFlag();
-    void UnsetCarryFlag();
+    void ClearCarryFlag();
 
     uint16_t AF() {return (uint16_t)(registers.a << 8) | registers.f;}
     uint16_t BC() {return (uint16_t)(registers.b << 8) | registers.c;}
@@ -104,6 +104,16 @@ private:
     void AddL();
     void AddHL();
     void AddImmediate();
+
+    void ADC_A();
+    void ADC_B();
+    void ADC_C();
+    void ADC_D();
+    void ADC_E();
+    void ADC_H();
+    void ADC_L();
+    void ADC_HL();
+    void ADC_Immediate();
 
     Registers registers{};
     Memory* memory;
