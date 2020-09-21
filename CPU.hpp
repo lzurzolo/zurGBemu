@@ -95,15 +95,15 @@ private:
     void PopDE();
     void PopHL();
 
-    void AddA();
-    void AddB();
-    void AddC();
-    void AddD();
-    void AddE();
-    void AddH();
-    void AddL();
-    void AddHL();
-    void AddImmediate();
+    void ADD_A();
+    void ADD_B();
+    void ADD_C();
+    void ADD_D();
+    void ADD_E();
+    void ADD_H();
+    void ADD_L();
+    void ADD_HL();
+    void ADD_Immediate();
 
     void ADC_A();
     void ADC_B();

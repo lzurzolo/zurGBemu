@@ -16,15 +16,15 @@ CPU::~CPU()
 
 void CPU::PopulateDispatchTable()
 {
-   dispatchTable.insert(std::make_pair(0x80, std::bind(&CPU::AddB, this)));
-   dispatchTable.insert(std::make_pair(0x81, std::bind(&CPU::AddC, this)));
-   dispatchTable.insert(std::make_pair(0x82, std::bind(&CPU::AddD, this)));
-   dispatchTable.insert(std::make_pair(0x83, std::bind(&CPU::AddE, this)));
-   dispatchTable.insert(std::make_pair(0x84, std::bind(&CPU::AddH, this)));
-   dispatchTable.insert(std::make_pair(0x85, std::bind(&CPU::AddL, this)));
-   dispatchTable.insert(std::make_pair(0x86, std::bind(&CPU::AddHL, this)));
-   dispatchTable.insert(std::make_pair(0x87, std::bind(&CPU::AddA, this)));
-   dispatchTable.insert(std::make_pair(0xC6, std::bind(&CPU::AddImmediate, this)));
+   dispatchTable.insert(std::make_pair(0x80, std::bind(&CPU::ADD_B, this)));
+   dispatchTable.insert(std::make_pair(0x81, std::bind(&CPU::ADD_C, this)));
+   dispatchTable.insert(std::make_pair(0x82, std::bind(&CPU::ADD_D, this)));
+   dispatchTable.insert(std::make_pair(0x83, std::bind(&CPU::ADD_E, this)));
+   dispatchTable.insert(std::make_pair(0x84, std::bind(&CPU::ADD_H, this)));
+   dispatchTable.insert(std::make_pair(0x85, std::bind(&CPU::ADD_L, this)));
+   dispatchTable.insert(std::make_pair(0x86, std::bind(&CPU::ADD_HL, this)));
+   dispatchTable.insert(std::make_pair(0x87, std::bind(&CPU::ADD_A, this)));
+   dispatchTable.insert(std::make_pair(0xC6, std::bind(&CPU::ADD_Immediate, this)));
    dispatchTable.insert(std::make_pair(0x00, std::bind(&CPU::NOP, this)));
 }
 
@@ -473,7 +473,7 @@ void CPU::PopHL()
     registers.l = memory->Read(registers.sp++);
 }
 
-void CPU::AddA()
+void CPU::ADD_A()
 {
     DEBUG("0x87 ADD A,A");
     DEBUG("Register A");
@@ -493,7 +493,7 @@ void CPU::AddA()
     DEBUG(" ");
 }
 
-void CPU::AddB()
+void CPU::ADD_B()
 {
     DEBUG("0x80 ADD A,B");
     DEBUG("Register A");
@@ -513,7 +513,7 @@ void CPU::AddB()
     DEBUG(" ");
 }
 
-void CPU::AddC()
+void CPU::ADD_C()
 {
     DEBUG("0x81 ADD A,C");
     DEBUG("Register A");
@@ -533,7 +533,7 @@ void CPU::AddC()
     DEBUG(" ");
 }
 
-void CPU::AddD()
+void CPU::ADD_D()
 {
     DEBUG("0x82 ADD A,D");
     DEBUG("Register A");
@@ -553,7 +553,7 @@ void CPU::AddD()
     DEBUG(" ");
 }
 
-void CPU::AddE()
+void CPU::ADD_E()
 {
     DEBUG("0x83 ADD A,E");
     DEBUG("Register A");
@@ -573,7 +573,7 @@ void CPU::AddE()
     DEBUG(" ");
 }
 
-void CPU::AddH()
+void CPU::ADD_H()
 {
     DEBUG("0x84 ADD A,H");
     DEBUG("Register A");
@@ -593,7 +593,7 @@ void CPU::AddH()
     DEBUG(" ");
 }
 
-void CPU::AddL()
+void CPU::ADD_L()
 {
     DEBUG("0x85 ADD A,L");
     DEBUG("Register A");
@@ -613,7 +613,7 @@ void CPU::AddL()
     DEBUG(" ");
 }
 
-void CPU::AddHL()
+void CPU::ADD_HL()
 {
     DEBUG("0x86 ADD A,(HL)");
     DEBUG("Register A");
@@ -641,7 +641,7 @@ void CPU::AddHL()
     DEBUG(" ");
 }
 
-void CPU::AddImmediate()
+void CPU::ADD_Immediate()
 {
     DEBUG("0xC6 ADD A,#");
     DEBUG("Register A");
