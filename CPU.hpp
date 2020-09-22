@@ -89,11 +89,16 @@ private:
     void LDSPHL();
     void LDHLSPn(uint8_t n);
     void LDnnSP(uint16_t nn);
-    void Push(uint16_t nn);
-    void PopAF();
-    void PopBC();
-    void PopDE();
-    void PopHL();
+
+    void PUSH_AF();
+    void PUSH_BC();
+    void PUSH_DE();
+    void PUSH_HL();
+
+    void POP_AF();
+    void POP_BC();
+    void POP_DE();
+    void POP_HL();
 
     void ADD_A();
     void ADD_B();
@@ -114,6 +119,36 @@ private:
     void ADC_L();
     void ADC_HL();
     void ADC_Immediate();
+
+    void SUB_A();
+    void SUB_B();
+    void SUB_C();
+    void SUB_D();
+    void SUB_E();
+    void SUB_H();
+    void SUB_L();
+    void SUB_HL();
+    void SUB_Immediate();
+
+    void AND_A();
+    void AND_B();
+    void AND_C();
+    void AND_D();
+    void AND_E();
+    void AND_H();
+    void AND_L();
+    void AND_HL();
+    void AND_Immediate();
+
+    void OR_A();
+    void OR_B();
+    void OR_C();
+    void OR_D();
+    void OR_E();
+    void OR_H();
+    void OR_L();
+    void OR_HL();
+    void OR_Immediate();
 
     Registers registers{};
     Memory* memory;

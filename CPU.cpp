@@ -16,16 +16,51 @@ CPU::~CPU()
 
 void CPU::PopulateDispatchTable()
 {
-   dispatchTable.insert(std::make_pair(0x80, std::bind(&CPU::ADD_B, this)));
-   dispatchTable.insert(std::make_pair(0x81, std::bind(&CPU::ADD_C, this)));
-   dispatchTable.insert(std::make_pair(0x82, std::bind(&CPU::ADD_D, this)));
-   dispatchTable.insert(std::make_pair(0x83, std::bind(&CPU::ADD_E, this)));
-   dispatchTable.insert(std::make_pair(0x84, std::bind(&CPU::ADD_H, this)));
-   dispatchTable.insert(std::make_pair(0x85, std::bind(&CPU::ADD_L, this)));
-   dispatchTable.insert(std::make_pair(0x86, std::bind(&CPU::ADD_HL, this)));
-   dispatchTable.insert(std::make_pair(0x87, std::bind(&CPU::ADD_A, this)));
-   dispatchTable.insert(std::make_pair(0xC6, std::bind(&CPU::ADD_Immediate, this)));
-   dispatchTable.insert(std::make_pair(0x00, std::bind(&CPU::NOP, this)));
+    dispatchTable.insert(std::make_pair(0x00, std::bind(&CPU::NOP, this)));
+    dispatchTable.insert(std::make_pair(0x80, std::bind(&CPU::ADD_B, this)));
+    dispatchTable.insert(std::make_pair(0x81, std::bind(&CPU::ADD_C, this)));
+    dispatchTable.insert(std::make_pair(0x82, std::bind(&CPU::ADD_D, this)));
+    dispatchTable.insert(std::make_pair(0x83, std::bind(&CPU::ADD_E, this)));
+    dispatchTable.insert(std::make_pair(0x84, std::bind(&CPU::ADD_H, this)));
+    dispatchTable.insert(std::make_pair(0x85, std::bind(&CPU::ADD_L, this)));
+    dispatchTable.insert(std::make_pair(0x86, std::bind(&CPU::ADD_HL, this)));
+    dispatchTable.insert(std::make_pair(0x87, std::bind(&CPU::ADD_A, this)));
+    dispatchTable.insert(std::make_pair(0x88, std::bind(&CPU::ADC_B, this)));
+    dispatchTable.insert(std::make_pair(0x89, std::bind(&CPU::ADC_C, this)));
+    dispatchTable.insert(std::make_pair(0x8A, std::bind(&CPU::ADC_D, this)));
+    dispatchTable.insert(std::make_pair(0x8B, std::bind(&CPU::ADC_E, this)));
+    dispatchTable.insert(std::make_pair(0x8C, std::bind(&CPU::ADC_H, this)));
+    dispatchTable.insert(std::make_pair(0x8D, std::bind(&CPU::ADC_L, this)));
+    dispatchTable.insert(std::make_pair(0x8E, std::bind(&CPU::ADC_HL, this)));
+    dispatchTable.insert(std::make_pair(0x8F, std::bind(&CPU::ADC_A, this)));
+    dispatchTable.insert(std::make_pair(0xA0, std::bind(&CPU::AND_B, this)));
+    dispatchTable.insert(std::make_pair(0xA1, std::bind(&CPU::AND_C, this)));
+    dispatchTable.insert(std::make_pair(0xA2, std::bind(&CPU::AND_D, this)));
+    dispatchTable.insert(std::make_pair(0xA3, std::bind(&CPU::AND_E, this)));
+    dispatchTable.insert(std::make_pair(0xA4, std::bind(&CPU::AND_H, this)));
+    dispatchTable.insert(std::make_pair(0xA5, std::bind(&CPU::AND_L, this)));
+    dispatchTable.insert(std::make_pair(0xA6, std::bind(&CPU::AND_HL, this)));
+    dispatchTable.insert(std::make_pair(0xA7, std::bind(&CPU::AND_A, this)));
+    dispatchTable.insert(std::make_pair(0xB0, std::bind(&CPU::OR_B, this)));
+    dispatchTable.insert(std::make_pair(0xB1, std::bind(&CPU::OR_C, this)));
+    dispatchTable.insert(std::make_pair(0xB2, std::bind(&CPU::OR_D, this)));
+    dispatchTable.insert(std::make_pair(0xB3, std::bind(&CPU::OR_E, this)));
+    dispatchTable.insert(std::make_pair(0xB4, std::bind(&CPU::OR_H, this)));
+    dispatchTable.insert(std::make_pair(0xB5, std::bind(&CPU::OR_L, this)));
+    dispatchTable.insert(std::make_pair(0xB6, std::bind(&CPU::OR_HL, this)));
+    dispatchTable.insert(std::make_pair(0xB7, std::bind(&CPU::OR_A, this)));
+    dispatchTable.insert(std::make_pair(0xC1, std::bind(&CPU::POP_BC, this)));
+    dispatchTable.insert(std::make_pair(0xC5, std::bind(&CPU::PUSH_BC, this)));
+    dispatchTable.insert(std::make_pair(0xC6, std::bind(&CPU::ADD_Immediate, this)));
+    dispatchTable.insert(std::make_pair(0xCE, std::bind(&CPU::ADC_Immediate, this)));
+    dispatchTable.insert(std::make_pair(0xD1, std::bind(&CPU::POP_DE, this)));
+    dispatchTable.insert(std::make_pair(0xD5, std::bind(&CPU::PUSH_DE, this)));
+    dispatchTable.insert(std::make_pair(0xE1, std::bind(&CPU::POP_HL, this)));
+    dispatchTable.insert(std::make_pair(0xE5, std::bind(&CPU::PUSH_HL, this)));
+    dispatchTable.insert(std::make_pair(0xE6, std::bind(&CPU::AND_Immediate, this)));
+    dispatchTable.insert(std::make_pair(0xF1, std::bind(&CPU::POP_AF, this)));
+    dispatchTable.insert(std::make_pair(0xF5, std::bind(&CPU::PUSH_AF, this)));
+    dispatchTable.insert(std::make_pair(0xF6, std::bind(&CPU::OR_Immediate, this)));
 }
 
 void CPU::SetZeroFlag()
@@ -263,14 +298,6 @@ void CPU::HandleInstruction(uint8_t instruction)
         uint16_t address = (uint16_t)(lsb << 8) | msb;
         LDnnSP(address);
     }
-    else if(instruction == 0xF5) Push(AF());
-    else if(instruction == 0xC5) Push(BC());
-    else if(instruction == 0xD5) Push(DE());
-    else if(instruction == 0xE5) Push(HL());
-    else if(instruction == 0xF1) PopAF();
-    else if(instruction == 0xC1) PopBC();
-    else if(instruction == 0xD1) PopDE();
-    else if(instruction == 0xE1) PopHL();
     */
 }
 
@@ -440,34 +467,77 @@ void CPU::LDnnSP(uint16_t nn)
     registers.sp = nn;
 }
 
-void CPU::Push(uint16_t nn)
+void CPU::PUSH_AF()
 {
     registers.sp--;
-    uint8_t msb = (uint8_t) nn >> 8;
-    uint8_t lsb = (uint8_t) nn;
+
+    uint16_t af = AF();
+
+    uint8_t msb = (uint8_t) af >> 8;
+    uint8_t lsb = (uint8_t) af;
+
     memory->Write(registers.sp--, msb);
     memory->Write(registers.sp--, lsb);
 }
 
-void CPU::PopAF()
+void CPU::PUSH_BC()
+{
+    registers.sp--;
+
+    uint16_t bc = BC();
+
+    uint8_t msb = (uint8_t) bc >> 8;
+    uint8_t lsb = (uint8_t) bc;
+
+    memory->Write(registers.sp--, msb);
+    memory->Write(registers.sp--, lsb);
+}
+
+void CPU::PUSH_DE()
+{
+    registers.sp--;
+
+    uint16_t de = DE();
+
+    uint8_t msb = (uint8_t) de >> 8;
+    uint8_t lsb = (uint8_t) de;
+
+    memory->Write(registers.sp--, msb);
+    memory->Write(registers.sp--, lsb);
+}
+
+void CPU::PUSH_HL()
+{
+    registers.sp--;
+
+    uint16_t hl = HL();
+
+    uint8_t msb = (uint8_t) hl >> 8;
+    uint8_t lsb = (uint8_t) hl;
+
+    memory->Write(registers.sp--, msb);
+    memory->Write(registers.sp--, lsb);
+}
+
+void CPU::POP_AF()
 {
     registers.a = memory->Read(registers.sp++);
     registers.f = memory->Read(registers.sp++);
 }
 
-void CPU::PopBC()
+void CPU::POP_BC()
 {
     registers.b = memory->Read(registers.sp++);
     registers.c = memory->Read(registers.sp++);
 }
 
-void CPU::PopDE()
+void CPU::POP_DE()
 {
     registers.d = memory->Read(registers.sp++);
     registers.e = memory->Read(registers.sp++);
 }
 
-void CPU::PopHL()
+void CPU::POP_HL()
 {
     registers.h = memory->Read(registers.sp++);
     registers.l = memory->Read(registers.sp++);
@@ -875,4 +945,336 @@ void CPU::ADC_Immediate()
     DEBUG("Result");
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG(" ");
+}
+
+void CPU::AND_A()
+{
+    DEBUG("0xA7 AND A,A");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+
+    uint8_t tReg = registers.a & registers.a;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    SetHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::AND_B()
+{
+    DEBUG("0xA0 AND A,B");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register B");
+    DEBUG_PRINT_REGISTER(registers.b);
+
+    uint8_t tReg = registers.a & registers.b;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    SetHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::AND_C()
+{
+    DEBUG("0xA1 AND A,C");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register C");
+    DEBUG_PRINT_REGISTER(registers.c);
+
+    uint8_t tReg = registers.a & registers.c;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    SetHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::AND_D()
+{
+    DEBUG("0xA2 AND A,D");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register D");
+    DEBUG_PRINT_REGISTER(registers.d);
+
+    uint8_t tReg = registers.a & registers.d;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    SetHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::AND_E()
+{
+    DEBUG("0xA3 AND A,E");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register E");
+    DEBUG_PRINT_REGISTER(registers.e);
+
+    uint8_t tReg = registers.a & registers.e;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    SetHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::AND_H()
+{
+    DEBUG("0xA4 AND A,H");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register H");
+    DEBUG_PRINT_REGISTER(registers.h);
+
+    uint8_t tReg = registers.a & registers.h;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    SetHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::AND_L()
+{
+    DEBUG("0xA5 AND A,L");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register L");
+    DEBUG_PRINT_REGISTER(registers.l);
+
+    uint8_t tReg = registers.a & registers.l;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    SetHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::AND_HL()
+{
+    DEBUG("0xA6 AND A,HL");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+
+    uint8_t val = memory->Read(HL());
+    DEBUG("Value at (HL)");
+    DEBUG_PRINT_REGISTER(val);
+
+    uint8_t tReg = registers.a & val;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    SetHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::AND_Immediate()
+{
+    DEBUG("0xE6 AND A,#");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+
+    uint8_t val = registers.pc++;
+    DEBUG("Operand");
+    DEBUG_PRINT_REGISTER(val);
+
+    uint8_t tReg = registers.a & val;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    SetHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::OR_A()
+{
+    DEBUG("0xB7 OR A,A");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+
+    uint8_t tReg = registers.a | registers.a;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::OR_B()
+{
+    DEBUG("0xB0 OR A,B");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register B");
+    DEBUG_PRINT_REGISTER(registers.b);
+
+    uint8_t tReg = registers.a | registers.b;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::OR_C()
+{
+    DEBUG("0xB1 OR A,C");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register C");
+    DEBUG_PRINT_REGISTER(registers.c);
+
+    uint8_t tReg = registers.a | registers.c;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::OR_D()
+{
+    DEBUG("0xB2 OR A,D");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register D");
+    DEBUG_PRINT_REGISTER(registers.d);
+
+    uint8_t tReg = registers.a | registers.d;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::OR_E()
+{
+    DEBUG("0xB3 OR A,E");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register E");
+    DEBUG_PRINT_REGISTER(registers.e);
+
+    uint8_t tReg = registers.a | registers.e;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::OR_H()
+{
+    DEBUG("0xB4 OR A,H");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register H");
+    DEBUG_PRINT_REGISTER(registers.h);
+
+    uint8_t tReg = registers.a | registers.h;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::OR_L()
+{
+    DEBUG("0xB5 OR A,L");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register L");
+    DEBUG_PRINT_REGISTER(registers.l);
+
+    uint8_t tReg = registers.a | registers.l;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::OR_HL()
+{
+    DEBUG("0xB6 OR A,(HL)");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register H");
+    DEBUG_PRINT_REGISTER(registers.h);
+    DEBUG("Register L");
+    DEBUG_PRINT_REGISTER(registers.l);
+
+    uint8_t val = memory->Read(HL());
+    DEBUG("Value at (HL)");
+    DEBUG_PRINT_REGISTER(val);
+
+    uint8_t tReg = registers.a | val;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::OR_Immediate()
+{
+    DEBUG("0xF6 OR A,#");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+
+    uint8_t val = registers.pc++;
+    DEBUG("Operand");
+    DEBUG_PRINT_REGISTER(val);
+
+    uint8_t tReg = registers.a | val;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
 }
