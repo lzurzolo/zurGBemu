@@ -150,6 +150,38 @@ private:
     void OR_HL();
     void OR_Immediate();
 
+    void XOR_A();
+    void XOR_B();
+    void XOR_C();
+    void XOR_D();
+    void XOR_E();
+    void XOR_H();
+    void XOR_L();
+    void XOR_HL();
+    void XOR_Immediate();
+    void XOR(uint8_t op);
+
+    void CP_A();
+    void CP_B();
+    void CP_C();
+    void CP_D();
+    void CP_E();
+    void CP_H();
+    void CP_L();
+    void CP_HL();
+    void CP_Immediate();
+    void CP(uint8_t op);
+
+    void INC_A();
+    void INC_B();
+    void INC_C();
+    void INC_D();
+    void INC_E();
+    void INC_H();
+    void INC_L();
+    void INC_HL();
+    void INC(uint8_t& reg);
+
     Registers registers{};
     Memory* memory;
 };

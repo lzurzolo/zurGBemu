@@ -17,6 +17,14 @@ CPU::~CPU()
 void CPU::PopulateDispatchTable()
 {
     dispatchTable.insert(std::make_pair(0x00, std::bind(&CPU::NOP, this)));
+    dispatchTable.insert(std::make_pair(0x04, std::bind(&CPU::INC_B, this)));
+    dispatchTable.insert(std::make_pair(0x0C, std::bind(&CPU::INC_C, this)));
+    dispatchTable.insert(std::make_pair(0x14, std::bind(&CPU::INC_D, this)));
+    dispatchTable.insert(std::make_pair(0x1C, std::bind(&CPU::INC_E, this)));
+    dispatchTable.insert(std::make_pair(0x24, std::bind(&CPU::INC_H, this)));
+    dispatchTable.insert(std::make_pair(0x2C, std::bind(&CPU::INC_L, this)));
+    dispatchTable.insert(std::make_pair(0x34, std::bind(&CPU::INC_HL, this)));
+    dispatchTable.insert(std::make_pair(0x3C, std::bind(&CPU::INC_A, this)));
     dispatchTable.insert(std::make_pair(0x80, std::bind(&CPU::ADD_B, this)));
     dispatchTable.insert(std::make_pair(0x81, std::bind(&CPU::ADD_C, this)));
     dispatchTable.insert(std::make_pair(0x82, std::bind(&CPU::ADD_D, this)));
@@ -41,6 +49,14 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0xA5, std::bind(&CPU::AND_L, this)));
     dispatchTable.insert(std::make_pair(0xA6, std::bind(&CPU::AND_HL, this)));
     dispatchTable.insert(std::make_pair(0xA7, std::bind(&CPU::AND_A, this)));
+    dispatchTable.insert(std::make_pair(0xA8, std::bind(&CPU::XOR_B, this)));
+    dispatchTable.insert(std::make_pair(0xA9, std::bind(&CPU::XOR_C, this)));
+    dispatchTable.insert(std::make_pair(0xAA, std::bind(&CPU::XOR_D, this)));
+    dispatchTable.insert(std::make_pair(0xAB, std::bind(&CPU::XOR_E, this)));
+    dispatchTable.insert(std::make_pair(0xAC, std::bind(&CPU::XOR_H, this)));
+    dispatchTable.insert(std::make_pair(0xAD, std::bind(&CPU::XOR_L, this)));
+    dispatchTable.insert(std::make_pair(0xAE, std::bind(&CPU::XOR_HL, this)));
+    dispatchTable.insert(std::make_pair(0xAF, std::bind(&CPU::XOR_A, this)));
     dispatchTable.insert(std::make_pair(0xB0, std::bind(&CPU::OR_B, this)));
     dispatchTable.insert(std::make_pair(0xB1, std::bind(&CPU::OR_C, this)));
     dispatchTable.insert(std::make_pair(0xB2, std::bind(&CPU::OR_D, this)));
@@ -49,6 +65,14 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0xB5, std::bind(&CPU::OR_L, this)));
     dispatchTable.insert(std::make_pair(0xB6, std::bind(&CPU::OR_HL, this)));
     dispatchTable.insert(std::make_pair(0xB7, std::bind(&CPU::OR_A, this)));
+    dispatchTable.insert(std::make_pair(0xB8, std::bind(&CPU::CP_B, this)));
+    dispatchTable.insert(std::make_pair(0xB9, std::bind(&CPU::CP_C, this)));
+    dispatchTable.insert(std::make_pair(0xBA, std::bind(&CPU::CP_D, this)));
+    dispatchTable.insert(std::make_pair(0xBB, std::bind(&CPU::CP_E, this)));
+    dispatchTable.insert(std::make_pair(0xBC, std::bind(&CPU::CP_H, this)));
+    dispatchTable.insert(std::make_pair(0xBD, std::bind(&CPU::CP_L, this)));
+    dispatchTable.insert(std::make_pair(0xBE, std::bind(&CPU::CP_HL, this)));
+    dispatchTable.insert(std::make_pair(0xBF, std::bind(&CPU::CP_A, this)));
     dispatchTable.insert(std::make_pair(0xC1, std::bind(&CPU::POP_BC, this)));
     dispatchTable.insert(std::make_pair(0xC5, std::bind(&CPU::PUSH_BC, this)));
     dispatchTable.insert(std::make_pair(0xC6, std::bind(&CPU::ADD_Immediate, this)));
@@ -58,9 +82,11 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0xE1, std::bind(&CPU::POP_HL, this)));
     dispatchTable.insert(std::make_pair(0xE5, std::bind(&CPU::PUSH_HL, this)));
     dispatchTable.insert(std::make_pair(0xE6, std::bind(&CPU::AND_Immediate, this)));
+    dispatchTable.insert(std::make_pair(0xEE, std::bind(&CPU::XOR_Immediate, this)));
     dispatchTable.insert(std::make_pair(0xF1, std::bind(&CPU::POP_AF, this)));
     dispatchTable.insert(std::make_pair(0xF5, std::bind(&CPU::PUSH_AF, this)));
     dispatchTable.insert(std::make_pair(0xF6, std::bind(&CPU::OR_Immediate, this)));
+    dispatchTable.insert(std::make_pair(0xFE, std::bind(&CPU::CP_Immediate, this)));
 }
 
 void CPU::SetZeroFlag()
@@ -1277,4 +1303,164 @@ void CPU::OR_Immediate()
     registers.a = tReg;
     DEBUG("Result");
     DEBUG_PRINT_REGISTER(registers.a);
+}
+
+void CPU::XOR_A()
+{
+    XOR(registers.a);
+}
+
+void CPU::XOR_B()
+{
+    XOR(registers.b);
+}
+
+void CPU::XOR_C()
+{
+    XOR(registers.c);
+}
+
+void CPU::XOR_D()
+{
+    XOR(registers.d);
+}
+
+void CPU::XOR_E()
+{
+    XOR(registers.e);
+}
+
+void CPU::XOR_H()
+{
+    XOR(registers.h);
+}
+
+void CPU::XOR_L()
+{
+    XOR(registers.l);
+}
+
+void CPU::XOR_HL()
+{
+    XOR(memory->Read(HL()));
+}
+
+void CPU::XOR_Immediate()
+{
+    XOR(registers.pc++);
+}
+
+void CPU::XOR(uint8_t op)
+{
+    uint8_t tReg = registers.a ^ op;
+    if(tReg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();
+    ClearCarryFlag();
+    registers.a = tReg;
+}
+
+void CPU::CP_A()
+{
+    CP(registers.a);
+}
+
+void CPU::CP_B()
+{
+    CP(registers.b);
+}
+
+void CPU::CP_C()
+{
+    CP(registers.c);
+}
+
+void CPU::CP_D()
+{
+    CP(registers.d);
+}
+
+void CPU::CP_E()
+{
+    CP(registers.e);
+}
+
+void CPU::CP_H()
+{
+    CP(registers.h);
+}
+
+void CPU::CP_L()
+{
+    CP(registers.l);
+}
+
+void CPU::CP_HL()
+{
+    CP(memory->Read(HL()));
+}
+
+void CPU::CP_Immediate()
+{
+    CP(registers.pc++);
+}
+
+void CPU::CP(uint8_t op)
+{
+    uint8_t res = registers.a - op;
+    if(res == 0x00) SetZeroFlag();
+    SetSubtractFlag();
+    if(registers.a < op) SetCarryFlag();
+    if(((registers.a & 0xF) - (op & 0xF)) < 0) SetHalfCarryFlag();
+}
+
+void CPU::INC_A()
+{
+    INC(registers.a);
+}
+
+void CPU::INC_B()
+{
+    INC(registers.b);
+}
+
+void CPU::INC_C()
+{
+    INC(registers.c);
+}
+
+void CPU::INC_D()
+{
+    INC(registers.d);
+}
+
+void CPU::INC_E()
+{
+    INC(registers.e);
+}
+
+void CPU::INC_H()
+{
+    INC(registers.h);
+}
+
+void CPU::INC_L()
+{
+    INC(registers.l);
+}
+
+void CPU::INC_HL()
+{
+    uint8_t v = memory->Read(HL());
+    INC(v);
+    memory->Write(HL(), v);
+}
+
+void CPU::INC(uint8_t& reg)
+{
+    uint8_t tReg = reg + 0x01;
+    if(((tReg & 0xF) + (reg & 0xF)) & 0x10) SetHalfCarryFlag();
+    reg = tReg;
+    if(reg == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
 }
