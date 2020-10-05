@@ -41,6 +41,14 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0x8D, std::bind(&CPU::ADC_L, this)));
     dispatchTable.insert(std::make_pair(0x8E, std::bind(&CPU::ADC_HL, this)));
     dispatchTable.insert(std::make_pair(0x8F, std::bind(&CPU::ADC_A, this)));
+    dispatchTable.insert(std::make_pair(0x90, std::bind(&CPU::SUB_B, this)));
+    dispatchTable.insert(std::make_pair(0x91, std::bind(&CPU::SUB_C, this)));
+    dispatchTable.insert(std::make_pair(0x92, std::bind(&CPU::SUB_D, this)));
+    dispatchTable.insert(std::make_pair(0x93, std::bind(&CPU::SUB_E, this)));
+    dispatchTable.insert(std::make_pair(0x94, std::bind(&CPU::SUB_H, this)));
+    dispatchTable.insert(std::make_pair(0x95, std::bind(&CPU::SUB_L, this)));
+    dispatchTable.insert(std::make_pair(0x96, std::bind(&CPU::SUB_HL, this)));
+    dispatchTable.insert(std::make_pair(0x97, std::bind(&CPU::SUB_A, this)));
     dispatchTable.insert(std::make_pair(0xA0, std::bind(&CPU::AND_B, this)));
     dispatchTable.insert(std::make_pair(0xA1, std::bind(&CPU::AND_C, this)));
     dispatchTable.insert(std::make_pair(0xA2, std::bind(&CPU::AND_D, this)));
@@ -79,6 +87,7 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0xCE, std::bind(&CPU::ADC_Immediate, this)));
     dispatchTable.insert(std::make_pair(0xD1, std::bind(&CPU::POP_DE, this)));
     dispatchTable.insert(std::make_pair(0xD5, std::bind(&CPU::PUSH_DE, this)));
+    dispatchTable.insert(std::make_pair(0xD6, std::bind(&CPU::SUB_Immediate, this)));
     dispatchTable.insert(std::make_pair(0xE1, std::bind(&CPU::POP_HL, this)));
     dispatchTable.insert(std::make_pair(0xE5, std::bind(&CPU::PUSH_HL, this)));
     dispatchTable.insert(std::make_pair(0xE6, std::bind(&CPU::AND_Immediate, this)));
@@ -971,6 +980,275 @@ void CPU::ADC_Immediate()
     DEBUG("Result");
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG(" ");
+}
+
+void CPU::SUB_A()
+{
+    DEBUG("0x97 SUB A,A");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+
+    uint16_t result = registers.a - registers.a;
+
+    if(result == 0x0) SetZeroFlag();
+    if(result < 0x0) SetCarryFlag();
+    if(((registers.a & 0xF) - (registers.a & 0xF)) < 0x0) SetHalfCarryFlag();
+    SetSubtractFlag();
+
+    registers.a = result;
+
+    DEBUG("OPERAND");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
+}
+
+void CPU::SUB_B()
+{
+    DEBUG("0x90 SUB A,B");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register B");
+    DEBUG_PRINT_REGISTER(registers.b);
+
+    uint16_t result = registers.a - registers.b;
+    
+    if(result == 0x0) SetZeroFlag();
+    if(result < 0x0) SetCarryFlag();
+    if(((registers.a & 0xF) - (registers.b & 0xF)) < 0x0) SetHalfCarryFlag();
+    SetSubtractFlag();
+
+    registers.a = result;
+
+    DEBUG("OPERAND");
+    DEBUG_PRINT_REGISTER(registers.b);
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
+}
+
+void CPU::SUB_C()
+{
+    DEBUG("0x91 SUB A,C");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register C");
+    DEBUG_PRINT_REGISTER(registers.c);
+
+    uint16_t result = registers.a - registers.c;
+    
+    if(result == 0x0) SetZeroFlag();
+    if(result < 0x0) SetCarryFlag();
+    if(((registers.a & 0xF) - (registers.c & 0xF)) < 0x0) SetHalfCarryFlag();
+    SetSubtractFlag();
+
+    registers.a = result;
+
+    DEBUG("OPERAND");
+    DEBUG_PRINT_REGISTER(registers.c);
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
+}
+
+void CPU::SUB_D()
+{
+    DEBUG("0x92 SUB A,D");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register D");
+    DEBUG_PRINT_REGISTER(registers.d);
+
+    uint16_t result = registers.a - registers.d;
+    
+    if(result == 0x0) SetZeroFlag();
+    if(result < 0x0) SetCarryFlag();
+    if(((registers.a & 0xF) - (registers.d & 0xF)) < 0x0) SetHalfCarryFlag();
+    SetSubtractFlag();
+
+    registers.a = result;
+
+    DEBUG("OPERAND");
+    DEBUG_PRINT_REGISTER(registers.d);
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
+}
+
+void CPU::SUB_E()
+{
+    DEBUG("0x93 SUB A,E");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register E");
+    DEBUG_PRINT_REGISTER(registers.e);
+
+    uint16_t result = registers.a - registers.e;
+    
+    if(result == 0x0) SetZeroFlag();
+    if(result < 0x0) SetCarryFlag();
+    if(((registers.a & 0xF) - (registers.e & 0xF)) < 0x0) SetHalfCarryFlag();
+    SetSubtractFlag();
+
+    registers.a = result;
+
+    DEBUG("OPERAND");
+    DEBUG_PRINT_REGISTER(registers.e);
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
+}
+
+void CPU::SUB_H()
+{
+    DEBUG("0x94 SUB A,H");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register H");
+    DEBUG_PRINT_REGISTER(registers.h);
+
+    uint16_t result = registers.a - registers.h;
+    
+    if(result == 0x0) SetZeroFlag();
+    if(result < 0x0) SetCarryFlag();
+    if(((registers.a & 0xF) - (registers.h & 0xF)) < 0x0) SetHalfCarryFlag();
+    SetSubtractFlag();
+
+    registers.a = result;
+
+    DEBUG("OPERAND");
+    DEBUG_PRINT_REGISTER(registers.h);
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
+}
+
+void CPU::SUB_L()
+{
+    DEBUG("0x94 SUB A,L");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register L");
+    DEBUG_PRINT_REGISTER(registers.l);
+
+    uint16_t result = registers.a - registers.l;
+    
+    if(result == 0x0) SetZeroFlag();
+    if(result < 0x0) SetCarryFlag();
+    if(((registers.a & 0xF) - (registers.l & 0xF)) < 0x0) SetHalfCarryFlag();
+    SetSubtractFlag();
+
+    registers.a = result;
+
+    DEBUG("OPERAND");
+    DEBUG_PRINT_REGISTER(registers.l);
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
+}
+
+void CPU::SUB_HL()
+{
+    DEBUG("0x96 SUB A,(HL)");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG("Register H");
+    DEBUG_PRINT_REGISTER(registers.h);
+    DEBUG("Register L");
+    DEBUG_PRINT_REGISTER(registers.l);
+    DEBUG("Register HL");
+    DEBUG_PRINT_REGISTER(HL());
+    DEBUG("Value at (HL)");
+    DEBUG_PRINT_REGISTER(memory->Read(HL()));
+
+    uint8_t val = memory->Read(HL());
+
+    uint16_t result = registers.a - val;
+    
+    if(result == 0x0) SetZeroFlag();
+    if(result < 0x0) SetCarryFlag();
+    if(((registers.a & 0xF) - (val & 0xF)) < 0x0) SetHalfCarryFlag();
+    SetSubtractFlag();
+
+    registers.a = result;
+
+    DEBUG("OPERAND");
+    DEBUG_PRINT_REGISTER(val);
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
+
+}
+
+void CPU::SUB_Immediate()
+{
+    DEBUG("0xD6 SUB A,#");
+    DEBUG("Register A");
+    DEBUG_PRINT_REGISTER(registers.a);
+
+    uint8_t val = registers.pc++;
+    uint16_t result = registers.a - val;
+    
+    if(result == 0x0) SetZeroFlag();
+    if(result < 0x0) SetCarryFlag();
+    if(((registers.a & 0xF) - (val & 0xF)) < 0x0) SetHalfCarryFlag();
+    SetSubtractFlag();
+
+    registers.a = result;
+
+    DEBUG("OPERAND");
+    DEBUG_PRINT_REGISTER(val);
+    DEBUG("Result");
+    DEBUG_PRINT_REGISTER(registers.a);
+    DEBUG(" ");
+}
+
+void CPU::SBC_A()
+{
+
+}
+
+void CPU::SBC_B()
+{
+
+}
+
+void CPU::SBC_C()
+{
+
+}
+
+void CPU::SBC_D()
+{
+
+}
+
+void CPU::SBC_E()
+{
+
+}
+
+void CPU::SBC_H()
+{
+
+}
+
+void CPU::SBC_L()
+{
+
+}
+
+void CPU::SBC_HL()
+{
+
+}
+
+void CPU::SBC_Immediate()
+{
+
 }
 
 void CPU::AND_A()

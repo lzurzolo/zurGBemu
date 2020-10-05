@@ -130,6 +130,16 @@ private:
     void SUB_HL();
     void SUB_Immediate();
 
+    void SBC_A();
+    void SBC_B();
+    void SBC_C();
+    void SBD_D();
+    void SBD_E();
+    void SBD_H();
+    void SBD_L();
+    void SBD_HL();
+    void SBC_Immediate();
+
     void AND_A();
     void AND_B();
     void AND_C();
