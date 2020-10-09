@@ -54,6 +54,8 @@ private:
     void SetCarryFlag();
     void ClearCarryFlag();
 
+    uint8_t GetCarryFlag();
+
     uint16_t AF() {return (uint16_t)(registers.a << 8) | registers.f;}
     uint16_t BC() {return (uint16_t)(registers.b << 8) | registers.c;}
     uint16_t DE() {return (uint16_t)(registers.d << 8) | registers.e;}
@@ -94,6 +96,7 @@ private:
     void PUSH_BC();
     void PUSH_DE();
     void PUSH_HL();
+    void PUSH(uint16_t op);
 
     void POP_AF();
     void POP_BC();
@@ -133,11 +136,11 @@ private:
     void SBC_A();
     void SBC_B();
     void SBC_C();
-    void SBD_D();
-    void SBD_E();
-    void SBD_H();
-    void SBD_L();
-    void SBD_HL();
+    void SBC_D();
+    void SBC_E();
+    void SBC_H();
+    void SBC_L();
+    void SBC_HL();
     void SBC_Immediate();
 
     void AND_A();
@@ -191,6 +194,21 @@ private:
     void INC_L();
     void INC_HL();
     void INC(uint8_t& reg);
+
+    void DEC_A();
+    void DEC_B();
+    void DEC_C();
+    void DEC_D();
+    void DEC_E();
+    void DEC_H();
+    void DEC_L();
+    void DEC_HL();
+    void DEC(uint8_t& reg);
+
+    void ADD_BC_TO_HL();
+    void ADD_DE_TO_HL();
+    void ADD_HL_TO_HL();
+    void ADD_SP_TO_HL();
 
     Registers registers{};
     Memory* memory;
