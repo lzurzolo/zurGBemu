@@ -150,6 +150,7 @@ private:
     void SBC_L();
     void SBC_HL();
     void SBC_Immediate();
+    void SBC(uint8_t op);
 
     void AND_A();
     void AND_B();
