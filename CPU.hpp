@@ -29,6 +29,15 @@ struct Registers
     uint16_t pc;
 };
 
+enum class InterruptState
+{
+    Undefined,
+    Enabled,
+    Disabled,
+    NeedToEnable,
+    NeedToDisable
+};
+
 class CPU
 {
 public:
@@ -250,9 +259,18 @@ private:
     void SWAP(uint8_t& op);
 
     void DAA();
+    void CPL();
+    void CCF();
+    void SCF();
+    void HALT();
+    void STOP();
+
+    void DI();
+    void EI();
 
     Registers registers{};
     Memory* memory;
+    InterruptState interruptState;
 };
 
 #endif //ZURGBEMU_CPU_HPP

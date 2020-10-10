@@ -8,6 +8,8 @@ const uint8_t SUBTRACT_FLAG_BIT_MASK = 0b01000000;
 const uint8_t ZERO_FLAG_BIT_MASK = 0b10000000;
 const uint8_t CARRY_FLAG_BIT_MASK =- 0b00010000;
 const uint8_t HALF_CARRY_FLAG_BIT_MASK = 0b00100000;
+const uint8_t DISABLE_INTERRUPT_OPCODE = 0xF3;
+const uint8_t ENABLE_INTERRUPT_OPCODE = 0xFB;
 
 CPU::CPU(Memory* m)
 : memory(m)
@@ -39,11 +41,14 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0x29, std::bind(&CPU::ADD_HL_TO_HL, this)));
     dispatchTable.insert(std::make_pair(0x24, std::bind(&CPU::INC_H, this)));
     dispatchTable.insert(std::make_pair(0x2C, std::bind(&CPU::INC_L, this)));
+    dispatchTable.insert(std::make_pair(0x2F, std::bind(&CPU::CPL, this)));
     dispatchTable.insert(std::make_pair(0x33, std::bind(&CPU::INC_SP, this)));
     dispatchTable.insert(std::make_pair(0x34, std::bind(&CPU::INC_VALUE_AT_HL, this)));
+    dispatchTable.insert(std::make_pair(0x37, std::bind(&CPU::SCF, this)));
     dispatchTable.insert(std::make_pair(0x39, std::bind(&CPU::ADD_SP_TO_HL, this)));
     dispatchTable.insert(std::make_pair(0x3B, std::bind(&CPU::DEC_SP, this)));
     dispatchTable.insert(std::make_pair(0x3C, std::bind(&CPU::INC_A, this)));
+    dispatchTable.insert(std::make_pair(0x3F, std::bind(&CPU::CCF, this)));
     dispatchTable.insert(std::make_pair(0x80, std::bind(&CPU::ADD_B, this)));
     dispatchTable.insert(std::make_pair(0x81, std::bind(&CPU::ADD_C, this)));
     dispatchTable.insert(std::make_pair(0x82, std::bind(&CPU::ADD_D, this)));
@@ -123,8 +128,10 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0xE8, std::bind(&CPU::ADD_SP, this)));
     dispatchTable.insert(std::make_pair(0xEE, std::bind(&CPU::XOR_Immediate, this)));
     dispatchTable.insert(std::make_pair(0xF1, std::bind(&CPU::POP_AF, this)));
+    dispatchTable.insert(std::make_pair(0xF3, std::bind(&CPU::DI, this)));
     dispatchTable.insert(std::make_pair(0xF5, std::bind(&CPU::PUSH_AF, this)));
     dispatchTable.insert(std::make_pair(0xF6, std::bind(&CPU::OR_Immediate, this)));
+    dispatchTable.insert(std::make_pair(0xFB, std::bind(&CPU::EI, this)));
     dispatchTable.insert(std::make_pair(0xFE, std::bind(&CPU::CP_Immediate, this)));
 }
 
@@ -248,6 +255,17 @@ void CPU::HandleInstruction(uint8_t instruction)
     else 
     {
         dispatchTable[instruction]();
+
+        // the EI and DI instructions respectively enable and disable interrupts after the next instruction
+        // following the EI or DI instruction has been executed
+        if(interruptState == InterruptState::NeedToDisable && instruction != DISABLE_INTERRUPT_OPCODE)
+        {
+            interruptState = InterruptState::Disabled;
+        }
+        else if(interruptState == InterruptState::NeedToEnable && instruction != ENABLE_INTERRUPT_OPCODE)
+        {
+            interruptState = InterruptState::Enabled;
+        }
     }
 /*
     else if(instruction == 0x06) LDrn(registers.b);
@@ -416,6 +434,19 @@ void CPU::HandleInstruction(uint8_t instruction)
         LDnnSP(address);
     }
     */
+}
+
+void CPU::HandleExtendedInstruction()
+{
+    auto instruction = registers.pc++;
+    if (extendedInstructionDispatchTable.find(instruction) == extendedInstructionDispatchTable.end()) 
+    {
+
+    }
+    else 
+    {
+        extendedInstructionDispatchTable[instruction]();
+    }
 }
 
 void CPU::NOP()
@@ -1716,15 +1747,48 @@ void CPU::DAA()
     ClearHalfCarryFlag();
 }
 
-void CPU::HandleExtendedInstruction()
+void CPU::CPL()
 {
-    auto instruction = registers.pc++;
-    if (extendedInstructionDispatchTable.find(instruction) == extendedInstructionDispatchTable.end()) 
-    {
-
-    }
-    else 
-    {
-        extendedInstructionDispatchTable[instruction]();
-    }
+    registers.a = (uint8_t)~registers.a;
+    SetSubtractFlag();
+    SetHalfCarryFlag();
 }
+
+void CPU::CCF()
+{
+    if(IsCarryFlagSet()) ClearCarryFlag();
+    else SetCarryFlag();
+
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();
+}
+
+void CPU::SCF()
+{
+    SetCarryFlag();
+    ClearHalfCarryFlag();
+    ClearSubtractFlag();
+}
+
+void CPU::HALT()
+{
+    // 0x76
+    // TODO : eh?
+}
+
+void CPU::STOP()
+{
+    // 0x10 0x00
+    // TODO : eh?
+}
+
+void CPU::DI()
+{
+    interruptState = InterruptState::NeedToDisable;
+}
+
+void CPU::EI()
+{
+    interruptState = InterruptState::NeedToEnable;
+}
+
