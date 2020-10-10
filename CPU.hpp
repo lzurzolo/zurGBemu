@@ -67,6 +67,7 @@ private:
     void SetSP(uint16_t sp);
 
     void HandleInstruction(uint8_t instruction);
+
     void NOP();
     void LDrn(uint8_t& r);
     void LDrr(uint8_t& r1, uint8_t& r2);
@@ -112,6 +113,7 @@ private:
     void ADD_L();
     void ADD_HL();
     void ADD_Immediate();
+    void ADD(uint8_t op);
 
     void ADC_A();
     void ADC_B();
