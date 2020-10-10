@@ -39,8 +39,10 @@ public:
 
 private:
     std::map<uint8_t, std::function<void(void)>> dispatchTable;
+    std::map<uint8_t, std::function<void(void)>> extendedInstructionDispatchTable;
 
     void PopulateDispatchTable();
+    void PopulateExtendedInstructionDispatchTable();
 
     void SetZeroFlag();
     void ClearZeroFlag();
@@ -67,6 +69,7 @@ private:
     void SetSP(uint16_t sp);
 
     void HandleInstruction(uint8_t instruction);
+    void HandleExtendedInstruction();
 
     void NOP();
     void LDrn(uint8_t& r);
@@ -92,10 +95,6 @@ private:
     void LDSPHL();
     void LDHLSPn(uint8_t n);
     void LDnnSP(uint16_t nn);
-
-
-
-
 
     void PUSH_AF();
     void PUSH_BC();
@@ -161,6 +160,7 @@ private:
     void AND_L();
     void AND_HL();
     void AND_Immediate();
+    void AND(uint8_t op);
 
     void OR_A();
     void OR_B();
@@ -171,6 +171,7 @@ private:
     void OR_L();
     void OR_HL();
     void OR_Immediate();
+    void OR(uint8_t op);
 
     void XOR_A();
     void XOR_B();
@@ -201,7 +202,7 @@ private:
     void INC_E();
     void INC_H();
     void INC_L();
-    void INC_HL();
+    void INC_VALUE_AT_HL();
     void INC(uint8_t& reg);
 
     void DEC_A();
@@ -211,17 +212,39 @@ private:
     void DEC_E();
     void DEC_H();
     void DEC_L();
-    void DEC_HL();
+    void DEC_VALUE_AT_HL();
     void DEC(uint8_t& reg);
 
     void ADD_BC_TO_HL();
     void ADD_DE_TO_HL();
     void ADD_HL_TO_HL();
     void ADD_SP_TO_HL();
+    void ADD_TO_HL(uint16_t op);
+
+    void ADD_SP();
+
+    void INC_BC();
+    void INC_DE();
+    void INC_HL();
+    void INC_SP();
+
+    void DEC_BC();
+    void DEC_DE();
+    void DEC_HL();
+    void DEC_SP();
+
+    void SWAP_A();
+    void SWAP_B();
+    void SWAP_C();
+    void SWAP_D();
+    void SWAP_E();
+    void SWAP_H();
+    void SWAP_L();
+    void SWAP_VALUE_AT_HL();
+    void SWAP(uint8_t& op);
 
     Registers registers{};
     Memory* memory;
 };
-
 
 #endif //ZURGBEMU_CPU_HPP
