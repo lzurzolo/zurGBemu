@@ -695,20 +695,8 @@ void CPU::ADC_A()
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG("Register A");
     DEBUG_PRINT_REGISTER(registers.a);
-    DEBUG("Carry");
 
-    uint8_t carryFlag = GetCarryFlag();
-    DEBUG_PRINT_REGISTER(carryFlag);
-    uint16_t result = registers.a + registers.a + carryFlag;
-    if(result == 0x00) SetZeroFlag();
-    if(result > 0xFF) SetCarryFlag();
-    if((registers.a & 0xF) + ((registers.a + carryFlag) & 0xF) > 0xF) SetHalfCarryFlag();
-    ClearSubtractFlag();
-    registers.a = (uint8_t)result;
-
-    DEBUG("Result");
-    DEBUG_PRINT_REGISTER(registers.a);
-    DEBUG(" ");
+    ADC(registers.a);
 }
 
 void CPU::ADC_B()
@@ -718,20 +706,8 @@ void CPU::ADC_B()
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG("Register B");
     DEBUG_PRINT_REGISTER(registers.b);
-    DEBUG("Carry");
 
-    uint8_t carryFlag = GetCarryFlag();
-    DEBUG_PRINT_REGISTER(carryFlag);
-    uint16_t result = registers.a + registers.b + carryFlag;
-    if(result == 0x00) SetZeroFlag();
-    if(result > 0xFF) SetCarryFlag();
-    if((registers.a & 0xF) + ((registers.b + carryFlag) & 0xF) > 0xF) SetHalfCarryFlag();
-    ClearSubtractFlag();
-    registers.a = (uint8_t)result;
-
-    DEBUG("Result");
-    DEBUG_PRINT_REGISTER(registers.a);
-    DEBUG(" ");
+    ADC(registers.b);
 }
 
 void CPU::ADC_C()
@@ -741,20 +717,8 @@ void CPU::ADC_C()
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG("Register C");
     DEBUG_PRINT_REGISTER(registers.c);
-    DEBUG("Carry");
 
-    uint8_t carryFlag = GetCarryFlag();
-    DEBUG_PRINT_REGISTER(carryFlag);
-    uint16_t result = registers.a + registers.c + carryFlag;
-    if(result == 0x00) SetZeroFlag();
-    if(result > 0xFF) SetCarryFlag();
-    if((registers.a & 0xF) + ((registers.c + carryFlag) & 0xF) > 0xF) SetHalfCarryFlag();
-    ClearSubtractFlag();
-    registers.a = (uint8_t)result;
-
-    DEBUG("Result");
-    DEBUG_PRINT_REGISTER(registers.a);
-    DEBUG(" ");
+    ADC(registers.c);
 }
 
 void CPU::ADC_D()
@@ -764,20 +728,8 @@ void CPU::ADC_D()
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG("Register D");
     DEBUG_PRINT_REGISTER(registers.d);
-    DEBUG("Carry");
 
-    uint8_t carryFlag = GetCarryFlag();
-    DEBUG_PRINT_REGISTER(carryFlag);
-    uint16_t result = registers.a + registers.d + carryFlag;
-    if(result == 0x00) SetZeroFlag();
-    if(result > 0xFF) SetCarryFlag();
-    if((registers.a & 0xF) + ((registers.d + carryFlag) & 0xF) > 0xF) SetHalfCarryFlag();
-    ClearSubtractFlag();
-    registers.a = (uint8_t)result;
-
-    DEBUG("Result");
-    DEBUG_PRINT_REGISTER(registers.a);
-    DEBUG(" ");
+    ADC(registers.d);
 }
 
 void CPU::ADC_E()
@@ -787,20 +739,8 @@ void CPU::ADC_E()
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG("Register E");
     DEBUG_PRINT_REGISTER(registers.e);
-    DEBUG("Carry");
 
-    uint8_t carryFlag = GetCarryFlag();
-    DEBUG_PRINT_REGISTER(carryFlag);
-    uint16_t result = registers.a + registers.e + carryFlag;
-    if(result == 0x00) SetZeroFlag();
-    if(result > 0xFF) SetCarryFlag();
-    if((registers.a & 0xF) + ((registers.e + carryFlag) & 0xF) > 0xF) SetHalfCarryFlag();
-    ClearSubtractFlag();
-    registers.a = (uint8_t)result;
-
-    DEBUG("Result");
-    DEBUG_PRINT_REGISTER(registers.a);
-    DEBUG(" ");
+    ADC(registers.e);
 }
 
 void CPU::ADC_H()
@@ -810,20 +750,8 @@ void CPU::ADC_H()
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG("Register H");
     DEBUG_PRINT_REGISTER(registers.h);
-    DEBUG("Carry");
 
-    uint8_t carryFlag = GetCarryFlag();
-    DEBUG_PRINT_REGISTER(carryFlag);
-    uint16_t result = registers.a + registers.h + carryFlag;
-    if(result == 0x00) SetZeroFlag();
-    if(result > 0xFF) SetCarryFlag();
-    if((registers.a & 0xF) + ((registers.h + carryFlag) & 0xF) > 0xF) SetHalfCarryFlag();
-    ClearSubtractFlag();
-    registers.a = (uint8_t)result;
-
-    DEBUG("Result");
-    DEBUG_PRINT_REGISTER(registers.a);
-    DEBUG(" ");
+    ADC(registers.h);
 }
 
 void CPU::ADC_L()
@@ -833,20 +761,8 @@ void CPU::ADC_L()
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG("Register L");
     DEBUG_PRINT_REGISTER(registers.l);
-    DEBUG("Carry");
 
-    uint8_t carryFlag = GetCarryFlag();
-    DEBUG_PRINT_REGISTER(carryFlag);
-    uint16_t result = registers.a + registers.l + carryFlag;
-    if(result == 0x00) SetZeroFlag();
-    if(result > 0xFF) SetCarryFlag();
-    if((registers.a & 0xF) + ((registers.l + carryFlag) & 0xF) > 0xF) SetHalfCarryFlag();
-    ClearSubtractFlag();
-    registers.a = (uint8_t)result;
-
-    DEBUG("Result");
-    DEBUG_PRINT_REGISTER(registers.a);
-    DEBUG(" ");
+    ADC(registers.l);
 }
 
 void CPU::ADC_HL()
@@ -862,21 +778,8 @@ void CPU::ADC_HL()
     DEBUG_PRINT_REGISTER(HL());
     DEBUG("Value at (HL)");
     DEBUG_PRINT_REGISTER(memory->Read(HL()));
-    DEBUG("Carry");
 
-    uint8_t carryFlag = GetCarryFlag();
-    DEBUG_PRINT_REGISTER(carryFlag);
-    uint8_t val = memory->Read(HL());
-    uint16_t result = registers.a + val + carryFlag;
-    if(result == 0x00) SetZeroFlag();
-    if(result > 0xFF) SetCarryFlag();
-    if((registers.a & 0xF) + ((val + carryFlag) & 0xF) > 0xF) SetHalfCarryFlag();
-    ClearSubtractFlag();
-    registers.a = (uint8_t)result;
-
-    DEBUG("Result");
-    DEBUG_PRINT_REGISTER(registers.a);
-    DEBUG(" ");
+    ADC(memory->Read(HL()));
 }
 
 void CPU::ADC_Immediate()
@@ -884,20 +787,22 @@ void CPU::ADC_Immediate()
     DEBUG("0xCE ADC A,#");
     DEBUG("Register A");
     DEBUG_PRINT_REGISTER(registers.a);
+    ADC(registers.pc++);
+}
+
+void CPU::ADC(uint8_t op)
+{
+    DEBUG("OPERAND");
+    DEBUG_PRINT_REGISTER(op);
     DEBUG("Carry");
     uint8_t carryFlag = GetCarryFlag();
     DEBUG_PRINT_REGISTER(carryFlag);
-
-    uint8_t val = registers.pc++;
-    uint16_t result = registers.a + val + carryFlag;
+    uint16_t result = registers.a + op + carryFlag;
     if(result == 0x00) SetZeroFlag();
     if(result > 0xFF) SetCarryFlag();
-    if((registers.a & 0xF) + (val + carryFlag & 0xF) > 0xF) SetHalfCarryFlag();
+    if((registers.a & 0xF) + ((op + carryFlag) & 0xF) > 0xF) SetHalfCarryFlag();
     ClearSubtractFlag();
     registers.a = (uint8_t)result;
-
-    DEBUG("OPERAND");
-    DEBUG_PRINT_REGISTER(registers.pc);
     DEBUG("Result");
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG(" ");
@@ -911,20 +816,7 @@ void CPU::SUB_A()
     DEBUG("Register A");
     DEBUG_PRINT_REGISTER(registers.a);
 
-    uint16_t result = registers.a - registers.a;
-
-    if(result == 0x0) SetZeroFlag();
-    if(result < 0x0) SetCarryFlag();
-    if(((registers.a & 0xF) - (registers.a & 0xF)) < 0x0) SetHalfCarryFlag();
-    SetSubtractFlag();
-
-    registers.a = (uint8_t)result;
-
-    DEBUG("OPERAND");
-    DEBUG_PRINT_REGISTER(registers.a);
-    DEBUG("Result");
-    DEBUG_PRINT_REGISTER(registers.a);
-    DEBUG(" ");
+    SUB(registers.a);
 }
 
 void CPU::SUB_B()
@@ -935,20 +827,7 @@ void CPU::SUB_B()
     DEBUG("Register B");
     DEBUG_PRINT_REGISTER(registers.b);
 
-    uint16_t result = registers.a - registers.b;
-    
-    if(result == 0x0) SetZeroFlag();
-    if(result < 0x0) SetCarryFlag();
-    if(((registers.a & 0xF) - (registers.b & 0xF)) < 0x0) SetHalfCarryFlag();
-    SetSubtractFlag();
-
-    registers.a = (uint8_t)result;
-
-    DEBUG("OPERAND");
-    DEBUG_PRINT_REGISTER(registers.b);
-    DEBUG("Result");
-    DEBUG_PRINT_REGISTER(registers.a);
-    DEBUG(" ");
+    SUB(registers.b);
 }
 
 void CPU::SUB_C()
@@ -959,20 +838,7 @@ void CPU::SUB_C()
     DEBUG("Register C");
     DEBUG_PRINT_REGISTER(registers.c);
 
-    uint16_t result = registers.a - registers.c;
-    
-    if(result == 0x0) SetZeroFlag();
-    if(result < 0x0) SetCarryFlag();
-    if(((registers.a & 0xF) - (registers.c & 0xF)) < 0x0) SetHalfCarryFlag();
-    SetSubtractFlag();
-
-    registers.a = (uint8_t)result;
-
-    DEBUG("OPERAND");
-    DEBUG_PRINT_REGISTER(registers.c);
-    DEBUG("Result");
-    DEBUG_PRINT_REGISTER(registers.a);
-    DEBUG(" ");
+    SUB(registers.c);
 }
 
 void CPU::SUB_D()
@@ -983,20 +849,7 @@ void CPU::SUB_D()
     DEBUG("Register D");
     DEBUG_PRINT_REGISTER(registers.d);
 
-    uint16_t result = registers.a - registers.d;
-    
-    if(result == 0x0) SetZeroFlag();
-    if(result < 0x0) SetCarryFlag();
-    if(((registers.a & 0xF) - (registers.d & 0xF)) < 0x0) SetHalfCarryFlag();
-    SetSubtractFlag();
-
-    registers.a = (uint8_t)result;
-
-    DEBUG("OPERAND");
-    DEBUG_PRINT_REGISTER(registers.d);
-    DEBUG("Result");
-    DEBUG_PRINT_REGISTER(registers.a);
-    DEBUG(" ");
+    SUB(registers.d);
 }
 
 void CPU::SUB_E()
@@ -1007,20 +860,7 @@ void CPU::SUB_E()
     DEBUG("Register E");
     DEBUG_PRINT_REGISTER(registers.e);
 
-    uint16_t result = registers.a - registers.e;
-    
-    if(result == 0x0) SetZeroFlag();
-    if(result < 0x0) SetCarryFlag();
-    if(((registers.a & 0xF) - (registers.e & 0xF)) < 0x0) SetHalfCarryFlag();
-    SetSubtractFlag();
-
-    registers.a = (uint8_t)result;
-
-    DEBUG("OPERAND");
-    DEBUG_PRINT_REGISTER(registers.e);
-    DEBUG("Result");
-    DEBUG_PRINT_REGISTER(registers.a);
-    DEBUG(" ");
+    SUB(registers.e);
 }
 
 void CPU::SUB_H()
@@ -1031,20 +871,7 @@ void CPU::SUB_H()
     DEBUG("Register H");
     DEBUG_PRINT_REGISTER(registers.h);
 
-    uint16_t result = registers.a - registers.h;
-    
-    if(result == 0x0) SetZeroFlag();
-    if(result < 0x0) SetCarryFlag();
-    if(((registers.a & 0xF) - (registers.h & 0xF)) < 0x0) SetHalfCarryFlag();
-    SetSubtractFlag();
-
-    registers.a = (uint8_t)result;
-
-    DEBUG("OPERAND");
-    DEBUG_PRINT_REGISTER(registers.h);
-    DEBUG("Result");
-    DEBUG_PRINT_REGISTER(registers.a);
-    DEBUG(" ");
+    SUB(registers.h);
 }
 
 void CPU::SUB_L()
@@ -1055,20 +882,7 @@ void CPU::SUB_L()
     DEBUG("Register L");
     DEBUG_PRINT_REGISTER(registers.l);
 
-    uint16_t result = registers.a - registers.l;
-    
-    if(result == 0x0) SetZeroFlag();
-    if(result < 0x0) SetCarryFlag();
-    if(((registers.a & 0xF) - (registers.l & 0xF)) < 0x0) SetHalfCarryFlag();
-    SetSubtractFlag();
-
-    registers.a = (uint8_t)result;
-
-    DEBUG("OPERAND");
-    DEBUG_PRINT_REGISTER(registers.l);
-    DEBUG("Result");
-    DEBUG_PRINT_REGISTER(registers.a);
-    DEBUG(" ");
+    SUB(registers.l);
 }
 
 void CPU::SUB_HL()
@@ -1085,23 +899,26 @@ void CPU::SUB_HL()
     DEBUG("Value at (HL)");
     DEBUG_PRINT_REGISTER(memory->Read(HL()));
 
-    uint8_t val = memory->Read(HL());
+    SUB(memory->Read(HL()));
+}
 
-    uint16_t result = registers.a - val;
-    
+void CPU::SUB(uint8_t op)
+{
+    DEBUG("OPERAND");
+    DEBUG_PRINT_REGISTER(op);
+
+    uint16_t result = registers.a - op;
+
     if(result == 0x0) SetZeroFlag();
     if(result < 0x0) SetCarryFlag();
-    if(((registers.a & 0xF) - (val & 0xF)) < 0x0) SetHalfCarryFlag();
+    if(((registers.a & 0xF) - (op & 0xF)) < 0x0) SetHalfCarryFlag();
     SetSubtractFlag();
 
     registers.a = (uint8_t)result;
 
-    DEBUG("OPERAND");
-    DEBUG_PRINT_REGISTER(val);
     DEBUG("Result");
     DEBUG_PRINT_REGISTER(registers.a);
     DEBUG(" ");
-
 }
 
 void CPU::SUB_Immediate()

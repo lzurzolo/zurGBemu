@@ -93,6 +93,10 @@ private:
     void LDHLSPn(uint8_t n);
     void LDnnSP(uint16_t nn);
 
+
+
+
+
     void PUSH_AF();
     void PUSH_BC();
     void PUSH_DE();
@@ -124,6 +128,7 @@ private:
     void ADC_L();
     void ADC_HL();
     void ADC_Immediate();
+    void ADC(uint8_t op);
 
     void SUB_A();
     void SUB_B();
@@ -134,6 +139,7 @@ private:
     void SUB_L();
     void SUB_HL();
     void SUB_Immediate();
+    void SUB(uint8_t op);
 
     void SBC_A();
     void SBC_B();
