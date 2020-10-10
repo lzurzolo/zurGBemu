@@ -4,6 +4,11 @@
 
 #include "CPU.hpp"
 
+const uint8_t SUBTRACT_FLAG_BIT_MASK = 0b01000000;
+const uint8_t ZERO_FLAG_BIT_MASK = 0b10000000;
+const uint8_t CARRY_FLAG_BIT_MASK =- 0b00010000;
+const uint8_t HALF_CARRY_FLAG_BIT_MASK = 0b00100000;
+
 CPU::CPU(Memory* m)
 : memory(m)
 {
@@ -30,6 +35,7 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0x1C, std::bind(&CPU::INC_E, this)));
     dispatchTable.insert(std::make_pair(0x2B, std::bind(&CPU::DEC_HL, this)));
     dispatchTable.insert(std::make_pair(0x23, std::bind(&CPU::INC_HL, this)));
+    dispatchTable.insert(std::make_pair(0x27, std::bind(&CPU::DAA, this)));
     dispatchTable.insert(std::make_pair(0x29, std::bind(&CPU::ADD_HL_TO_HL, this)));
     dispatchTable.insert(std::make_pair(0x24, std::bind(&CPU::INC_H, this)));
     dispatchTable.insert(std::make_pair(0x2C, std::bind(&CPU::INC_L, this)));
@@ -136,47 +142,82 @@ void CPU::PopulateExtendedInstructionDispatchTable()
 
 void CPU::SetZeroFlag()
 {
-    registers.f |= 0b10000000;
+    registers.f |= ZERO_FLAG_BIT_MASK;
 }
 
 void CPU::ClearZeroFlag()
 {
-    registers.f &= ~0b10000000;
+    registers.f &= ~ZERO_FLAG_BIT_MASK;
 }
 
-uint8_t CPU::GetCarryFlag()
+uint8_t CPU::GetZeroFlag()
 {
-    return registers.f & 0b10000000;
+    return registers.f & ZERO_FLAG_BIT_MASK;
+}
+
+bool CPU::IsZeroFlagSet()
+{
+    return registers.f & ZERO_FLAG_BIT_MASK;
 }
 
 void CPU::SetSubtractFlag()
 {
-    registers.f |= 0b01000000;
+    registers.f |= SUBTRACT_FLAG_BIT_MASK;
 }
 
 void CPU::ClearSubtractFlag()
 {
-    registers.f &= ~0b01000000;
+    registers.f &= ~SUBTRACT_FLAG_BIT_MASK;
+}
+
+uint8_t CPU::GetSubtractFlag()
+{
+    return registers.f & SUBTRACT_FLAG_BIT_MASK;
+}
+
+bool CPU::IsSubtractFlagSet()
+{
+    return registers.f & SUBTRACT_FLAG_BIT_MASK;
 }
 
 void CPU::SetHalfCarryFlag()
 {
-    registers.f |= 0b00100000;
+    registers.f |= HALF_CARRY_FLAG_BIT_MASK;
 }
 
 void CPU::ClearHalfCarryFlag()
 {
-    registers.f &= ~0b00100000;
+    registers.f &= ~HALF_CARRY_FLAG_BIT_MASK;
+}
+
+uint8_t CPU::GetHalfCarryFlag()
+{
+    return registers.f & HALF_CARRY_FLAG_BIT_MASK;
+}
+    
+bool CPU::IsHalfCarryFlagSet()
+{
+    return registers.f & HALF_CARRY_FLAG_BIT_MASK;
 }
 
 void CPU::SetCarryFlag()
 {
-    registers.f |= 0b00010000;
+    registers.f |= CARRY_FLAG_BIT_MASK;
 }
 
 void CPU::ClearCarryFlag()
 {
-    registers.f &= ~0b00010000;
+    registers.f &= ~CARRY_FLAG_BIT_MASK;
+}
+
+uint8_t CPU::GetCarryFlag()
+{
+    return registers.f & CARRY_FLAG_BIT_MASK;
+}
+
+bool CPU::IsCarryFlagSet()
+{
+    return registers.f & CARRY_FLAG_BIT_MASK;
 }
 
 void CPU::Reset()
@@ -1649,6 +1690,30 @@ void CPU::SWAP(uint8_t& op)
     ClearSubtractFlag();
     ClearHalfCarryFlag();
     ClearCarryFlag();
+}
+
+void CPU::DAA()
+{
+    if(!IsSubtractFlagSet())
+    {
+        if(IsCarryFlagSet() || registers.a > 0x99)
+        {
+            registers.a += 0x60;
+            SetCarryFlag();
+        }
+        if(IsHalfCarryFlagSet() | (registers.a & 0x0F) > 0x09)
+        {
+            registers.a += 0x6;
+        }
+    }
+    else
+    {
+        if(IsCarryFlagSet()) registers.a -= 0x60;
+        if(IsHalfCarryFlagSet()) registers.a -= 0x6;
+    }
+
+    if(registers.a == 0x0) SetZeroFlag();
+    ClearHalfCarryFlag();
 }
 
 void CPU::HandleExtendedInstruction()

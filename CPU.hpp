@@ -46,17 +46,23 @@ private:
 
     void SetZeroFlag();
     void ClearZeroFlag();
+    uint8_t GetZeroFlag();
+    bool IsZeroFlagSet();
 
     void SetSubtractFlag();
     void ClearSubtractFlag();
+    uint8_t GetSubtractFlag();
+    bool IsSubtractFlagSet();
 
     void SetHalfCarryFlag();
     void ClearHalfCarryFlag();
+    uint8_t GetHalfCarryFlag();
+    bool IsHalfCarryFlagSet();
 
     void SetCarryFlag();
     void ClearCarryFlag();
-
     uint8_t GetCarryFlag();
+    bool IsCarryFlagSet();
 
     uint16_t AF() {return (uint16_t)(registers.a << 8) | registers.f;}
     uint16_t BC() {return (uint16_t)(registers.b << 8) | registers.c;}
@@ -242,6 +248,8 @@ private:
     void SWAP_L();
     void SWAP_VALUE_AT_HL();
     void SWAP(uint8_t& op);
+
+    void DAA();
 
     Registers registers{};
     Memory* memory;
