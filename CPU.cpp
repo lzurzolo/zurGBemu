@@ -27,6 +27,7 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0x00, std::bind(&CPU::NOP, this)));
     dispatchTable.insert(std::make_pair(0x03, std::bind(&CPU::INC_BC, this)));
     dispatchTable.insert(std::make_pair(0x04, std::bind(&CPU::INC_B, this)));
+    dispatchTable.insert(std::make_pair(0x07, std::bind(&CPU::RLCA, this)));
     dispatchTable.insert(std::make_pair(0x09, std::bind(&CPU::ADD_BC_TO_HL, this)));
     dispatchTable.insert(std::make_pair(0x0B, std::bind(&CPU::DEC_BC, this)));
     dispatchTable.insert(std::make_pair(0x0C, std::bind(&CPU::INC_C, this)));
@@ -1790,5 +1791,19 @@ void CPU::DI()
 void CPU::EI()
 {
     interruptState = InterruptState::NeedToEnable;
+}
+
+void CPU::RLCA()
+{
+    uint8_t leftbit = registers.a & 0b10000000;
+    leftbit >> 7;
+    if(leftbit == 0x1) SetCarryFlag();
+    else ClearCarryFlag();
+    registers.a << 1;
+    registers.a |= leftbit;
+
+    if(registers.a == 0x00) SetZeroFlag();
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();
 }
 

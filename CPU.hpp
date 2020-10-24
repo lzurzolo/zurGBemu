@@ -257,7 +257,7 @@ private:
     void SWAP_L();
     void SWAP_VALUE_AT_HL();
     void SWAP(uint8_t& op);
-
+  
     void DAA();
     void CPL();
     void CCF();
@@ -267,6 +267,8 @@ private:
 
     void DI();
     void EI();
+
+    void RLCA();
 
     Registers registers{};
     Memory* memory;
