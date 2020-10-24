@@ -269,6 +269,7 @@ private:
     void EI();
 
     void RLCA();
+    void RLA();
 
     Registers registers{};
     Memory* memory;
