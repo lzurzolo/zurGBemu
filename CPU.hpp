@@ -270,6 +270,17 @@ private:
 
     void RLCA();
     void RLA();
+    void RRCA();
+    void RRA();
+
+    void RLC_A();
+    void RLC_B();
+    void RLC_C();
+    void RLC_D();
+    void RLC_E();
+    void RLC_H();
+    void RLC_L();
+    void RLC_VALUE_AT_HL();
 
     Registers registers{};
     Memory* memory;
