@@ -141,6 +141,22 @@ void CPU::PopulateDispatchTable()
 
 void CPU::PopulateExtendedInstructionDispatchTable()
 {
+    extendedInstructionDispatchTable.insert(std::make_pair(0x00, std::bind(&CPU::RLC_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x01, std::bind(&CPU::RLC_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x02, std::bind(&CPU::RLC_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x03, std::bind(&CPU::RLC_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x04, std::bind(&CPU::RLC_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x05, std::bind(&CPU::RLC_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x06, std::bind(&CPU::RLC_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x07, std::bind(&CPU::RLC_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x10, std::bind(&CPU::RL_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x11, std::bind(&CPU::RL_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x12, std::bind(&CPU::RL_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x13, std::bind(&CPU::RL_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x14, std::bind(&CPU::RL_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x15, std::bind(&CPU::RL_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x16, std::bind(&CPU::RL_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x17, std::bind(&CPU::RL_A, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x30, std::bind(&CPU::SWAP_B, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x31, std::bind(&CPU::SWAP_C, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x32, std::bind(&CPU::SWAP_D, this)));
@@ -1860,3 +1876,143 @@ void CPU::RRA()
     ClearHalfCarryFlag();
 }
 
+void CPU::RLC_A()
+{
+    RLC_n(registers.a);
+}
+
+void CPU::RLC_B()
+{
+    RLC_n(registers.b);
+}
+
+void CPU::RLC_C()
+{
+    RLC_n(registers.c);
+}
+
+void CPU::RLC_D()
+{
+    RLC_n(registers.d);
+}
+
+void CPU::RLC_E()
+{
+    RLC_n(registers.e);
+}
+
+void CPU::RLC_H()
+{
+    RLC_n(registers.h);
+}
+
+void CPU::RLC_L()
+{
+    RLC_n(registers.l);
+}
+
+void CPU::RLC_VALUE_AT_HL()
+{
+    auto val = memory->Read(HL());
+    uint8_t leftbit = val & 0b10000000;
+    leftbit >> 7;
+    if(leftbit == 0x0) ClearCarryFlag();
+    else SetCarryFlag();
+
+    val << 1;
+    val |= leftbit;
+
+    if(val == 0x0) SetZeroFlag();
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();    
+}
+
+void CPU::RLC_n(uint8_t& op)
+{
+    uint8_t leftbit = op & 0b10000000;
+    leftbit >> 7;
+    if(leftbit == 0x0) ClearCarryFlag();
+    else SetCarryFlag();
+
+    op << 1;
+    op |= leftbit;    
+
+    if(op == 0x0) SetZeroFlag();
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();
+}
+
+void CPU::RL_A()
+{
+    RL_n(registers.a);
+}
+
+void CPU::RL_B()
+{
+    RL_n(registers.b);
+}
+
+void CPU::RL_C()
+{
+    RL_n(registers.c);
+}
+
+void CPU::RL_D()
+{
+    RL_n(registers.d);
+}
+
+void CPU::RL_E()
+{
+    RL_n(registers.e);
+}
+
+void CPU::RL_H()
+{
+    RL_n(registers.h);
+}
+
+void CPU::RL_L()
+{
+    RL_n(registers.l);
+}
+
+void CPU::RL_VALUE_AT_HL()
+{
+    auto val = memory->Read(HL());
+    uint8_t leftbit = val & 0b10000000;
+    leftbit >> 7;
+
+    uint8_t carry = 0x0;
+    if(IsCarryFlagSet()) carry = 0x1;
+
+    if(leftbit == 0x0) ClearCarryFlag();
+    else SetCarryFlag();
+
+    val << 1;
+    val |= carry;
+
+    if(val == 0x0) SetZeroFlag();
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();
+}
+
+void CPU::RL_n(uint8_t& op)
+{
+    uint8_t leftbit = op & 0b10000000;
+    leftbit >> 7;
+
+    uint8_t carry = 0x0;
+
+    if(IsCarryFlagSet()) carry = 0x1; 
+
+    if(leftbit == 0x0) ClearCarryFlag();
+    else SetCarryFlag();
+
+    op << 1;
+    op |= carry;
+
+    if(op == 0x0) SetZeroFlag();
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();
+}

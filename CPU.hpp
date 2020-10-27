@@ -281,6 +281,7 @@ private:
     void RLC_H();
     void RLC_L();
     void RLC_VALUE_AT_HL();
+    void RLC_n(uint8_t& op);
 
     Registers registers{};
     Memory* memory;
