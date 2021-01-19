@@ -303,6 +303,16 @@ private:
     void RR_VALUE_AT_HL();
     void RR_n(uint8_t& op);
 
+    void SLA_A();
+    void SLA_B();
+    void SLA_C();
+    void SLA_D();
+    void SLA_E();
+    void SLA_H();
+    void SLA_L();
+    void SLA_VALUE_AT_HL();
+    void SLA_n(uint8_t& op);
+
     Registers registers{};
     Memory* memory;
     InterruptState interruptState;

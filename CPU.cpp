@@ -174,6 +174,14 @@ void CPU::PopulateExtendedInstructionDispatchTable()
     extendedInstructionDispatchTable.insert(std::make_pair(0x1D, std::bind(&CPU::RR_L, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x1E, std::bind(&CPU::RR_VALUE_AT_HL, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x1F, std::bind(&CPU::RR_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x20, std::bind(&CPU::SLA_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x21, std::bind(&CPU::SLA_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x22, std::bind(&CPU::SLA_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x23, std::bind(&CPU::SLA_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x24, std::bind(&CPU::SLA_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x25, std::bind(&CPU::SLA_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x26, std::bind(&CPU::SLA_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x27, std::bind(&CPU::SLA_A, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x30, std::bind(&CPU::SWAP_B, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x31, std::bind(&CPU::SWAP_C, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x32, std::bind(&CPU::SWAP_D, this)));
@@ -2112,4 +2120,68 @@ void CPU::RR_n(uint8_t& op)
     if(op == 0x0) SetZeroFlag();
     ClearSubtractFlag();
     ClearHalfCarryFlag();
+}
+
+void CPU::SLA_A()
+{
+    SLA_n(registers.a);
+}
+
+void CPU::SLA_B()
+{
+    SLA_n(registers.b);
+}
+
+void CPU::SLA_C()
+{
+    SLA_n(registers.c);
+}
+
+void CPU::SLA_D()
+{
+    SLA_n(registers.d);
+}
+
+void CPU::SLA_E()
+{
+    SLA_n(registers.e);
+}
+
+void CPU::SLA_H()
+{
+    SLA_n(registers.h);
+}
+
+void CPU::SLA_L()
+{
+    SLA_n(registers.l);
+}
+
+void CPU::SLA_VALUE_AT_HL()
+{
+    auto val = memory->Read(HL());
+    auto leftbit = val & 0b10000000;
+    leftbit >>= 7;
+    if(leftbit == 0x0) ClearCarryFlag();
+    else SetCarryFlag();
+    val &= 0b11111110;
+
+    ClearHalfCarryFlag();
+    ClearSubtractFlag();
+    if(val == 0x0) SetZeroFlag();
+
+    memory->Write(HL(), val);
+}
+
+void CPU::SLA_n(uint8_t& op)
+{
+    auto leftbit = op & 0b10000000;
+    leftbit >>= 7;
+    if(leftbit == 0x0) ClearCarryFlag();
+    else SetCarryFlag();
+    op &= 0b11111110;
+
+    ClearHalfCarryFlag();
+    ClearSubtractFlag();
+    if(op == 0x0) SetZeroFlag();
 }
