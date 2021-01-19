@@ -283,6 +283,26 @@ private:
     void RLC_VALUE_AT_HL();
     void RLC_n(uint8_t& op);
 
+    void RL_A();
+    void RL_B();
+    void RL_C();
+    void RL_D();
+    void RL_E();
+    void RL_H();
+    void RL_L();
+    void RL_VALUE_AT_HL();
+    void RL_n(uint8_t& op);
+
+    void RR_A();
+    void RR_B();
+    void RR_C();
+    void RR_D();
+    void RR_E();
+    void RR_H();
+    void RR_L();
+    void RR_VALUE_AT_HL();
+    void RR_n(uint8_t& op);
+
     Registers registers{};
     Memory* memory;
     InterruptState interruptState;

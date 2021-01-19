@@ -27,32 +27,41 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0x00, std::bind(&CPU::NOP, this)));
     dispatchTable.insert(std::make_pair(0x03, std::bind(&CPU::INC_BC, this)));
     dispatchTable.insert(std::make_pair(0x04, std::bind(&CPU::INC_B, this)));
+    dispatchTable.insert(std::make_pair(0x05, std::bind(&CPU::DEC_B, this)));
     dispatchTable.insert(std::make_pair(0x07, std::bind(&CPU::RLCA, this)));
     dispatchTable.insert(std::make_pair(0x09, std::bind(&CPU::ADD_BC_TO_HL, this)));
     dispatchTable.insert(std::make_pair(0x0B, std::bind(&CPU::DEC_BC, this)));
     dispatchTable.insert(std::make_pair(0x0C, std::bind(&CPU::INC_C, this)));
+    dispatchTable.insert(std::make_pair(0x0D, std::bind(&CPU::DEC_C, this)));
     dispatchTable.insert(std::make_pair(0x0F, std::bind(&CPU::RRCA, this)));
     dispatchTable.insert(std::make_pair(0x13, std::bind(&CPU::INC_DE, this)));
     dispatchTable.insert(std::make_pair(0x14, std::bind(&CPU::INC_D, this)));
+    dispatchTable.insert(std::make_pair(0x15, std::bind(&CPU::DEC_D, this)));
     dispatchTable.insert(std::make_pair(0x17, std::bind(&CPU::RLA, this)));
     dispatchTable.insert(std::make_pair(0x19, std::bind(&CPU::ADD_DE_TO_HL, this)));
     dispatchTable.insert(std::make_pair(0x1B, std::bind(&CPU::DEC_DE, this)));
     dispatchTable.insert(std::make_pair(0x1C, std::bind(&CPU::INC_E, this)));
+    dispatchTable.insert(std::make_pair(0x1D, std::bind(&CPU::DEC_E, this)));
     dispatchTable.insert(std::make_pair(0x1F, std::bind(&CPU::RRA, this)));
     dispatchTable.insert(std::make_pair(0x2B, std::bind(&CPU::DEC_HL, this)));
     dispatchTable.insert(std::make_pair(0x23, std::bind(&CPU::INC_HL, this)));
     dispatchTable.insert(std::make_pair(0x27, std::bind(&CPU::DAA, this)));
     dispatchTable.insert(std::make_pair(0x29, std::bind(&CPU::ADD_HL_TO_HL, this)));
     dispatchTable.insert(std::make_pair(0x24, std::bind(&CPU::INC_H, this)));
+    dispatchTable.insert(std::make_pair(0x25, std::bind(&CPU::DEC_H, this)));
     dispatchTable.insert(std::make_pair(0x2C, std::bind(&CPU::INC_L, this)));
+    dispatchTable.insert(std::make_pair(0x2D, std::bind(&CPU::DEC_L, this)));
     dispatchTable.insert(std::make_pair(0x2F, std::bind(&CPU::CPL, this)));
     dispatchTable.insert(std::make_pair(0x33, std::bind(&CPU::INC_SP, this)));
     dispatchTable.insert(std::make_pair(0x34, std::bind(&CPU::INC_VALUE_AT_HL, this)));
+    dispatchTable.insert(std::make_pair(0x35, std::bind(&CPU::DEC_VALUE_AT_HL, this)));
     dispatchTable.insert(std::make_pair(0x37, std::bind(&CPU::SCF, this)));
     dispatchTable.insert(std::make_pair(0x39, std::bind(&CPU::ADD_SP_TO_HL, this)));
     dispatchTable.insert(std::make_pair(0x3B, std::bind(&CPU::DEC_SP, this)));
     dispatchTable.insert(std::make_pair(0x3C, std::bind(&CPU::INC_A, this)));
+    dispatchTable.insert(std::make_pair(0x3D, std::bind(&CPU::DEC_A, this)));
     dispatchTable.insert(std::make_pair(0x3F, std::bind(&CPU::CCF, this)));
+    dispatchTable.insert(std::make_pair(0x76, std::bind(&CPU::HALT, this)));
     dispatchTable.insert(std::make_pair(0x80, std::bind(&CPU::ADD_B, this)));
     dispatchTable.insert(std::make_pair(0x81, std::bind(&CPU::ADD_C, this)));
     dispatchTable.insert(std::make_pair(0x82, std::bind(&CPU::ADD_D, this)));
@@ -157,6 +166,14 @@ void CPU::PopulateExtendedInstructionDispatchTable()
     extendedInstructionDispatchTable.insert(std::make_pair(0x15, std::bind(&CPU::RL_L, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x16, std::bind(&CPU::RL_VALUE_AT_HL, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x17, std::bind(&CPU::RL_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x18, std::bind(&CPU::RR_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x19, std::bind(&CPU::RR_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x1A, std::bind(&CPU::RR_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x1B, std::bind(&CPU::RR_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x1C, std::bind(&CPU::RR_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x1D, std::bind(&CPU::RR_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x1E, std::bind(&CPU::RR_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x1F, std::bind(&CPU::RR_A, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x30, std::bind(&CPU::SWAP_B, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x31, std::bind(&CPU::SWAP_C, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x32, std::bind(&CPU::SWAP_D, this)));
@@ -1981,7 +1998,7 @@ void CPU::RL_VALUE_AT_HL()
 {
     auto val = memory->Read(HL());
     uint8_t leftbit = val & 0b10000000;
-    leftbit >> 7;
+    leftbit >>= 7;
 
     uint8_t carry = 0x0;
     if(IsCarryFlagSet()) carry = 0x1;
@@ -1989,18 +2006,20 @@ void CPU::RL_VALUE_AT_HL()
     if(leftbit == 0x0) ClearCarryFlag();
     else SetCarryFlag();
 
-    val << 1;
+    val <<= 1;
     val |= carry;
 
     if(val == 0x0) SetZeroFlag();
     ClearSubtractFlag();
     ClearHalfCarryFlag();
+
+    memory->Write(HL(), val);
 }
 
 void CPU::RL_n(uint8_t& op)
 {
     uint8_t leftbit = op & 0b10000000;
-    leftbit >> 7;
+    leftbit >>= 7;
 
     uint8_t carry = 0x0;
 
@@ -2009,7 +2028,85 @@ void CPU::RL_n(uint8_t& op)
     if(leftbit == 0x0) ClearCarryFlag();
     else SetCarryFlag();
 
-    op << 1;
+    op <<= 1;
+    op |= carry;
+
+    if(op == 0x0) SetZeroFlag();
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();
+}
+
+void CPU::RR_A()
+{
+    RR_n(registers.a);
+}
+
+void CPU::RR_B()
+{
+    RR_n(registers.b);
+}
+
+void CPU::RR_C()
+{
+    RR_n(registers.c);
+}
+
+void CPU::RR_D()
+{
+    RR_n(registers.d);
+}
+
+void CPU::RR_E()
+{
+    RR_n(registers.e);
+}
+
+void CPU::RR_H()
+{
+    RR_n(registers.h);
+}
+
+void CPU::RR_L()
+{
+    RR_n(registers.l);
+}
+
+void CPU::RR_VALUE_AT_HL()
+{
+    auto val = memory->Read(HL());
+    uint8_t rightbit = val & 0b00000001;
+
+    uint8_t carry = 0x0;
+
+    if(IsCarryFlagSet()) carry = 0x1;
+
+    if(rightbit == 0x0) ClearCarryFlag();
+    else SetCarryFlag();
+
+    val >>= 1;
+    carry <<= 7;
+    val |= carry;
+
+    if(val == 0x0) SetZeroFlag();
+    ClearSubtractFlag();
+    ClearHalfCarryFlag();
+
+    memory->Write(HL(), val);
+}
+
+void CPU::RR_n(uint8_t& op)
+{
+    uint8_t rightbit = op & 0b00000001;
+
+    uint8_t carry = 0x0;
+
+    if(IsCarryFlagSet()) carry = 0x1;
+
+    if(rightbit == 0x0) ClearCarryFlag();
+    else SetCarryFlag();
+
+    op >>= 1;
+    carry <<= 7;
     op |= carry;
 
     if(op == 0x0) SetZeroFlag();
