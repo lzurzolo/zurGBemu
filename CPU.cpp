@@ -38,7 +38,9 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0x14, std::bind(&CPU::INC_D, this)));
     dispatchTable.insert(std::make_pair(0x15, std::bind(&CPU::DEC_D, this)));
     dispatchTable.insert(std::make_pair(0x17, std::bind(&CPU::RLA, this)));
+    dispatchTable.insert(std::make_pair(0x18, std::bind(&CPU::JR_n, this)));
     dispatchTable.insert(std::make_pair(0x19, std::bind(&CPU::ADD_DE_TO_HL, this)));
+    dispatchTable.insert(std::make_pair(0x20, std::bind(&CPU::JR_NZ_n, this)));
     dispatchTable.insert(std::make_pair(0x1B, std::bind(&CPU::DEC_DE, this)));
     dispatchTable.insert(std::make_pair(0x1C, std::bind(&CPU::INC_E, this)));
     dispatchTable.insert(std::make_pair(0x1D, std::bind(&CPU::DEC_E, this)));
@@ -46,16 +48,19 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0x2B, std::bind(&CPU::DEC_HL, this)));
     dispatchTable.insert(std::make_pair(0x23, std::bind(&CPU::INC_HL, this)));
     dispatchTable.insert(std::make_pair(0x27, std::bind(&CPU::DAA, this)));
+    dispatchTable.insert(std::make_pair(0x28, std::bind(&CPU::JR_Z_n, this)));
     dispatchTable.insert(std::make_pair(0x29, std::bind(&CPU::ADD_HL_TO_HL, this)));
     dispatchTable.insert(std::make_pair(0x24, std::bind(&CPU::INC_H, this)));
     dispatchTable.insert(std::make_pair(0x25, std::bind(&CPU::DEC_H, this)));
     dispatchTable.insert(std::make_pair(0x2C, std::bind(&CPU::INC_L, this)));
     dispatchTable.insert(std::make_pair(0x2D, std::bind(&CPU::DEC_L, this)));
     dispatchTable.insert(std::make_pair(0x2F, std::bind(&CPU::CPL, this)));
+    dispatchTable.insert(std::make_pair(0x30, std::bind(&CPU::JR_NC_n, this)));
     dispatchTable.insert(std::make_pair(0x33, std::bind(&CPU::INC_SP, this)));
     dispatchTable.insert(std::make_pair(0x34, std::bind(&CPU::INC_VALUE_AT_HL, this)));
     dispatchTable.insert(std::make_pair(0x35, std::bind(&CPU::DEC_VALUE_AT_HL, this)));
     dispatchTable.insert(std::make_pair(0x37, std::bind(&CPU::SCF, this)));
+    dispatchTable.insert(std::make_pair(0x38, std::bind(&CPU::JR_C_n, this)));
     dispatchTable.insert(std::make_pair(0x39, std::bind(&CPU::ADD_SP_TO_HL, this)));
     dispatchTable.insert(std::make_pair(0x3B, std::bind(&CPU::DEC_SP, this)));
     dispatchTable.insert(std::make_pair(0x3C, std::bind(&CPU::INC_A, this)));
@@ -127,18 +132,24 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0xBE, std::bind(&CPU::CP_HL, this)));
     dispatchTable.insert(std::make_pair(0xBF, std::bind(&CPU::CP_A, this)));
     dispatchTable.insert(std::make_pair(0xC1, std::bind(&CPU::POP_BC, this)));
+    dispatchTable.insert(std::make_pair(0xC2, std::bind(&CPU::JP_NZ_nn, this)));
+    dispatchTable.insert(std::make_pair(0xC3, std::bind(&CPU::JP_nn, this)));
     dispatchTable.insert(std::make_pair(0xC5, std::bind(&CPU::PUSH_BC, this)));
     dispatchTable.insert(std::make_pair(0xC6, std::bind(&CPU::ADD_Immediate, this)));
+    dispatchTable.insert(std::make_pair(0xCA, std::bind(&CPU::JP_Z_nn, this)));
     dispatchTable.insert(std::make_pair(0xCB, std::bind(&CPU::HandleExtendedInstruction, this)));
     dispatchTable.insert(std::make_pair(0xCE, std::bind(&CPU::ADC_Immediate, this)));
     dispatchTable.insert(std::make_pair(0xD1, std::bind(&CPU::POP_DE, this)));
+    dispatchTable.insert(std::make_pair(0xD2, std::bind(&CPU::JP_NC_nn, this)));
     dispatchTable.insert(std::make_pair(0xD5, std::bind(&CPU::PUSH_DE, this)));
     dispatchTable.insert(std::make_pair(0xD6, std::bind(&CPU::SUB_Immediate, this)));
+    dispatchTable.insert(std::make_pair(0xDA, std::bind(&CPU::JP_C_nn, this)));
     dispatchTable.insert(std::make_pair(0xDE, std::bind(&CPU::SBC_Immediate, this)));
     dispatchTable.insert(std::make_pair(0xE1, std::bind(&CPU::POP_HL, this)));
     dispatchTable.insert(std::make_pair(0xE5, std::bind(&CPU::PUSH_HL, this)));
     dispatchTable.insert(std::make_pair(0xE6, std::bind(&CPU::AND_Immediate, this)));
     dispatchTable.insert(std::make_pair(0xE8, std::bind(&CPU::ADD_SP, this)));
+    dispatchTable.insert(std::make_pair(0xE9, std::bind(&CPU::JP_HL, this)));
     dispatchTable.insert(std::make_pair(0xEE, std::bind(&CPU::XOR_Immediate, this)));
     dispatchTable.insert(std::make_pair(0xF1, std::bind(&CPU::POP_AF, this)));
     dispatchTable.insert(std::make_pair(0xF3, std::bind(&CPU::DI, this)));
@@ -3566,6 +3577,110 @@ void CPU::RES_b_N(uint8_t bitPos, uint8_t &op)
     else if(bitPos == 5) op &= 0b11011111;
     else if(bitPos == 6) op &= 0b10111111;
     else if(bitPos == 7) op &= 0b01111111;
+}
+
+void CPU::JP_nn()
+{
+    auto lsb = registers.pc++;
+    auto msb = registers.pc++;
+
+    auto addr = (uint16_t) (msb << 8 | lsb);
+    registers.pc = addr;
+}
+
+void CPU::JP_NZ_nn()
+{
+    if(!IsZeroFlagSet())
+    {
+        auto lsb = registers.pc++;
+        auto msb = registers.pc++;
+
+        auto addr = (uint16_t) (msb << 8 | lsb);
+        registers.pc = addr;
+    }
+}
+
+void CPU::JP_Z_nn()
+{
+    if(IsZeroFlagSet())
+    {
+        auto lsb = registers.pc++;
+        auto msb = registers.pc++;
+
+        auto addr = (uint16_t) (msb << 8 | lsb);
+        registers.pc = addr;
+    }
+}
+
+void CPU::JP_NC_nn()
+{
+    if(!IsCarryFlagSet())
+    {
+        auto lsb = registers.pc++;
+        auto msb = registers.pc++;
+
+        auto addr = (uint16_t) (msb << 8 | lsb);
+        registers.pc = addr;
+    }
+}
+
+void CPU::JP_C_nn()
+{
+    if(IsCarryFlagSet())
+    {
+        auto lsb = registers.pc++;
+        auto msb = registers.pc++;
+
+        auto addr = (uint16_t) (msb << 8 | lsb);
+        registers.pc = addr;
+    }
+}
+
+void CPU::JP_HL()
+{
+    registers.pc = HL();
+}
+
+void CPU::JR_n()
+{
+    int8_t n = registers.pc++;
+    registers.pc += n;
+}
+
+void CPU::JR_NZ_n()
+{
+    if(!IsZeroFlagSet())
+    {
+        int8_t n = registers.pc++;
+        registers.pc += n;
+    }
+}
+
+void CPU::JR_Z_n()
+{
+    if(IsZeroFlagSet())
+    {
+        int8_t n = registers.pc++;
+        registers.pc += n;
+    }
+}
+
+void CPU::JR_NC_n()
+{
+    if(!IsCarryFlagSet())
+    {
+        int8_t n = registers.pc++;
+        registers.pc += n;
+    }
+}
+
+void CPU::JR_C_n()
+{
+    if(IsCarryFlagSet())
+    {
+        int8_t n = registers.pc++;
+        registers.pc += n;
+    }
 }
 
 

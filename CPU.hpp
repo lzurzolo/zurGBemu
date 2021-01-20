@@ -555,6 +555,19 @@ private:
 
     void RES_b_N(uint8_t bitPos, uint8_t& op);
 
+    void JP_nn();
+    void JP_NZ_nn();
+    void JP_Z_nn();
+    void JP_NC_nn();
+    void JP_C_nn();
+    void JP_HL();
+
+    void JR_n();
+    void JR_NZ_n();
+    void JR_Z_n();
+    void JR_NC_n();
+    void JR_C_n();
+
     Registers registers{};
     Memory* memory;
     InterruptState interruptState;
