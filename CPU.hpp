@@ -481,6 +481,80 @@ private:
 
     void SET_b_N(uint8_t bitPos, uint8_t& op);
 
+    void RES_0_A();
+    void RES_0_B();
+    void RES_0_C();
+    void RES_0_D();
+    void RES_0_E();
+    void RES_0_H();
+    void RES_0_L();
+    void RES_0_VALUE_AT_HL();
+
+    void RES_1_A();
+    void RES_1_B();
+    void RES_1_C();
+    void RES_1_D();
+    void RES_1_E();
+    void RES_1_H();
+    void RES_1_L();
+    void RES_1_VALUE_AT_HL();
+
+    void RES_2_A();
+    void RES_2_B();
+    void RES_2_C();
+    void RES_2_D();
+    void RES_2_E();
+    void RES_2_H();
+    void RES_2_L();
+    void RES_2_VALUE_AT_HL();
+
+    void RES_3_A();
+    void RES_3_B();
+    void RES_3_C();
+    void RES_3_D();
+    void RES_3_E();
+    void RES_3_H();
+    void RES_3_L();
+    void RES_3_VALUE_AT_HL();
+
+    void RES_4_A();
+    void RES_4_B();
+    void RES_4_C();
+    void RES_4_D();
+    void RES_4_E();
+    void RES_4_H();
+    void RES_4_L();
+    void RES_4_VALUE_AT_HL();
+
+    void RES_5_A();
+    void RES_5_B();
+    void RES_5_C();
+    void RES_5_D();
+    void RES_5_E();
+    void RES_5_H();
+    void RES_5_L();
+    void RES_5_VALUE_AT_HL();
+
+    void RES_6_A();
+    void RES_6_B();
+    void RES_6_C();
+    void RES_6_D();
+    void RES_6_E();
+    void RES_6_H();
+    void RES_6_L();
+    void RES_6_VALUE_AT_HL();
+
+    void RES_7_A();
+    void RES_7_B();
+    void RES_7_C();
+    void RES_7_D();
+    void RES_7_E();
+    void RES_7_H();
+    void RES_7_L();
+    void RES_7_VALUE_AT_HL();
+
+    void RES_b_N(uint8_t bitPos, uint8_t& op);
+
     Registers registers{};
     Memory* memory;
     InterruptState interruptState;
