@@ -137,31 +137,39 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0xC4, std::bind(&CPU::CALL_NZ_nn, this)));
     dispatchTable.insert(std::make_pair(0xC5, std::bind(&CPU::PUSH_BC, this)));
     dispatchTable.insert(std::make_pair(0xC6, std::bind(&CPU::ADD_Immediate, this)));
+    dispatchTable.insert(std::make_pair(0xC7, std::bind(&CPU::RST_00H, this)));
     dispatchTable.insert(std::make_pair(0xCA, std::bind(&CPU::JP_Z_nn, this)));
     dispatchTable.insert(std::make_pair(0xCB, std::bind(&CPU::HandleExtendedInstruction, this)));
     dispatchTable.insert(std::make_pair(0xCC, std::bind(&CPU::CALL_Z_nn, this)));
     dispatchTable.insert(std::make_pair(0xCD, std::bind(&CPU::CALL_nn, this)));
     dispatchTable.insert(std::make_pair(0xCE, std::bind(&CPU::ADC_Immediate, this)));
+    dispatchTable.insert(std::make_pair(0xCF, std::bind(&CPU::RST_08H, this)));
     dispatchTable.insert(std::make_pair(0xD1, std::bind(&CPU::POP_DE, this)));
     dispatchTable.insert(std::make_pair(0xD2, std::bind(&CPU::JP_NC_nn, this)));
     dispatchTable.insert(std::make_pair(0xD4, std::bind(&CPU::CALL_NC_nn, this)));
     dispatchTable.insert(std::make_pair(0xD5, std::bind(&CPU::PUSH_DE, this)));
     dispatchTable.insert(std::make_pair(0xD6, std::bind(&CPU::SUB_Immediate, this)));
+    dispatchTable.insert(std::make_pair(0xD7, std::bind(&CPU::RST_10H, this)));
     dispatchTable.insert(std::make_pair(0xDA, std::bind(&CPU::JP_C_nn, this)));
     dispatchTable.insert(std::make_pair(0xDC, std::bind(&CPU::CALL_C_nn, this)));
     dispatchTable.insert(std::make_pair(0xDE, std::bind(&CPU::SBC_Immediate, this)));
+    dispatchTable.insert(std::make_pair(0xDF, std::bind(&CPU::RST_18H, this)));
     dispatchTable.insert(std::make_pair(0xE1, std::bind(&CPU::POP_HL, this)));
     dispatchTable.insert(std::make_pair(0xE5, std::bind(&CPU::PUSH_HL, this)));
     dispatchTable.insert(std::make_pair(0xE6, std::bind(&CPU::AND_Immediate, this)));
+    dispatchTable.insert(std::make_pair(0xE7, std::bind(&CPU::RST_20H, this)));
     dispatchTable.insert(std::make_pair(0xE8, std::bind(&CPU::ADD_SP, this)));
     dispatchTable.insert(std::make_pair(0xE9, std::bind(&CPU::JP_HL, this)));
     dispatchTable.insert(std::make_pair(0xEE, std::bind(&CPU::XOR_Immediate, this)));
+    dispatchTable.insert(std::make_pair(0xEF, std::bind(&CPU::RST_28H, this)));
     dispatchTable.insert(std::make_pair(0xF1, std::bind(&CPU::POP_AF, this)));
     dispatchTable.insert(std::make_pair(0xF3, std::bind(&CPU::DI, this)));
     dispatchTable.insert(std::make_pair(0xF5, std::bind(&CPU::PUSH_AF, this)));
     dispatchTable.insert(std::make_pair(0xF6, std::bind(&CPU::OR_Immediate, this)));
+    dispatchTable.insert(std::make_pair(0xF7, std::bind(&CPU::RST_30H, this)));
     dispatchTable.insert(std::make_pair(0xFB, std::bind(&CPU::EI, this)));
     dispatchTable.insert(std::make_pair(0xFE, std::bind(&CPU::CP_Immediate, this)));
+    dispatchTable.insert(std::make_pair(0xFF, std::bind(&CPU::RST_38H, this)));
 }
 
 void CPU::PopulateExtendedInstructionDispatchTable()
@@ -3743,6 +3751,94 @@ void CPU::CALL_C_nn()
         memory->Write(registers.sp--, msb);
         memory->Write(registers.sp--, lsb);
     }
+}
+
+void CPU::RST_00H()
+{
+    uint8_t msb = (uint8_t) registers.pc >> 8;
+    uint8_t lsb = (uint8_t) registers.pc;
+
+    memory->Write(registers.sp--, msb);
+    memory->Write(registers.sp--, lsb);
+
+    registers.pc = 0x0000;
+}
+
+void CPU::RST_08H()
+{
+    uint8_t msb = (uint8_t) registers.pc >> 8;
+    uint8_t lsb = (uint8_t) registers.pc;
+
+    memory->Write(registers.sp--, msb);
+    memory->Write(registers.sp--, lsb);
+
+    registers.pc = 0x0008;
+}
+
+void CPU::RST_10H()
+{
+    uint8_t msb = (uint8_t) registers.pc >> 8;
+    uint8_t lsb = (uint8_t) registers.pc;
+
+    memory->Write(registers.sp--, msb);
+    memory->Write(registers.sp--, lsb);
+
+    registers.pc = 0x0010;
+}
+
+void CPU::RST_18H()
+{
+    uint8_t msb = (uint8_t) registers.pc >> 8;
+    uint8_t lsb = (uint8_t) registers.pc;
+
+    memory->Write(registers.sp--, msb);
+    memory->Write(registers.sp--, lsb);
+
+    registers.pc = 0x0018;
+}
+
+void CPU::RST_20H()
+{
+    uint8_t msb = (uint8_t) registers.pc >> 8;
+    uint8_t lsb = (uint8_t) registers.pc;
+
+    memory->Write(registers.sp--, msb);
+    memory->Write(registers.sp--, lsb);
+
+    registers.pc = 0x0020;
+}
+
+void CPU::RST_28H()
+{
+    uint8_t msb = (uint8_t) registers.pc >> 8;
+    uint8_t lsb = (uint8_t) registers.pc;
+
+    memory->Write(registers.sp--, msb);
+    memory->Write(registers.sp--, lsb);
+
+    registers.pc = 0x0028;
+}
+
+void CPU::RST_30H()
+{
+    uint8_t msb = (uint8_t) registers.pc >> 8;
+    uint8_t lsb = (uint8_t) registers.pc;
+
+    memory->Write(registers.sp--, msb);
+    memory->Write(registers.sp--, lsb);
+
+    registers.pc = 0x0030;
+}
+
+void CPU::RST_38H()
+{
+    uint8_t msb = (uint8_t) registers.pc >> 8;
+    uint8_t lsb = (uint8_t) registers.pc;
+
+    memory->Write(registers.sp--, msb);
+    memory->Write(registers.sp--, lsb);
+
+    registers.pc = 0x0038;
 }
 
 

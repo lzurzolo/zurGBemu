@@ -574,6 +574,15 @@ private:
     void CALL_NC_nn();
     void CALL_C_nn();
 
+    void RST_00H();
+    void RST_08H();
+    void RST_10H();
+    void RST_18H();
+    void RST_20H();
+    void RST_28H();
+    void RST_30H();
+    void RST_38H();
+
     Registers registers{};
     Memory* memory;
     InterruptState interruptState;
