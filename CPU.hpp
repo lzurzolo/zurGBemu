@@ -568,6 +568,12 @@ private:
     void JR_NC_n();
     void JR_C_n();
 
+    void CALL_nn();
+    void CALL_NZ_nn();
+    void CALL_Z_nn();
+    void CALL_NC_nn();
+    void CALL_C_nn();
+
     Registers registers{};
     Memory* memory;
     InterruptState interruptState;
