@@ -333,6 +333,80 @@ private:
     void SRL_VALUE_AT_HL();
     void SRL_n(uint8_t& op);
 
+    void BIT_0_A();
+    void BIT_0_B();
+    void BIT_0_C();
+    void BIT_0_D();
+    void BIT_0_E();
+    void BIT_0_H();
+    void BIT_0_L();
+    void BIT_0_VALUE_AT_HL();
+
+    void BIT_1_A();
+    void BIT_1_B();
+    void BIT_1_C();
+    void BIT_1_D();
+    void BIT_1_E();
+    void BIT_1_H();
+    void BIT_1_L();
+    void BIT_1_VALUE_AT_HL();
+
+    void BIT_2_A();
+    void BIT_2_B();
+    void BIT_2_C();
+    void BIT_2_D();
+    void BIT_2_E();
+    void BIT_2_H();
+    void BIT_2_L();
+    void BIT_2_VALUE_AT_HL();
+
+    void BIT_3_A();
+    void BIT_3_B();
+    void BIT_3_C();
+    void BIT_3_D();
+    void BIT_3_E();
+    void BIT_3_H();
+    void BIT_3_L();
+    void BIT_3_VALUE_AT_HL();
+
+    void BIT_4_A();
+    void BIT_4_B();
+    void BIT_4_C();
+    void BIT_4_D();
+    void BIT_4_E();
+    void BIT_4_H();
+    void BIT_4_L();
+    void BIT_4_VALUE_AT_HL();
+
+    void BIT_5_A();
+    void BIT_5_B();
+    void BIT_5_C();
+    void BIT_5_D();
+    void BIT_5_E();
+    void BIT_5_H();
+    void BIT_5_L();
+    void BIT_5_VALUE_AT_HL();
+
+    void BIT_6_A();
+    void BIT_6_B();
+    void BIT_6_C();
+    void BIT_6_D();
+    void BIT_6_E();
+    void BIT_6_H();
+    void BIT_6_L();
+    void BIT_6_VALUE_AT_HL();
+
+    void BIT_7_A();
+    void BIT_7_B();
+    void BIT_7_C();
+    void BIT_7_D();
+    void BIT_7_E();
+    void BIT_7_H();
+    void BIT_7_L();
+    void BIT_7_VALUE_AT_HL();
+
+    void BIT_b_N(uint8_t bitPos, uint8_t& op);
+
     Registers registers{};
     Memory* memory;
     InterruptState interruptState;

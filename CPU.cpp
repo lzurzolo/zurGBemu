@@ -206,6 +206,71 @@ void CPU::PopulateExtendedInstructionDispatchTable()
     extendedInstructionDispatchTable.insert(std::make_pair(0x3D, std::bind(&CPU::SRL_L, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x3E, std::bind(&CPU::SRL_VALUE_AT_HL, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x3F, std::bind(&CPU::SRL_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x40, std::bind(&CPU::BIT_0_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x41, std::bind(&CPU::BIT_0_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x42, std::bind(&CPU::BIT_0_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x43, std::bind(&CPU::BIT_0_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x44, std::bind(&CPU::BIT_0_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x45, std::bind(&CPU::BIT_0_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x46, std::bind(&CPU::BIT_0_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x47, std::bind(&CPU::BIT_0_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x48, std::bind(&CPU::BIT_1_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x49, std::bind(&CPU::BIT_1_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x4A, std::bind(&CPU::BIT_1_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x4B, std::bind(&CPU::BIT_1_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x4C, std::bind(&CPU::BIT_1_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x4D, std::bind(&CPU::BIT_1_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x4E, std::bind(&CPU::BIT_1_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x4F, std::bind(&CPU::BIT_1_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x50, std::bind(&CPU::BIT_2_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x51, std::bind(&CPU::BIT_2_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x52, std::bind(&CPU::BIT_2_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x53, std::bind(&CPU::BIT_2_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x54, std::bind(&CPU::BIT_2_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x55, std::bind(&CPU::BIT_2_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x56, std::bind(&CPU::BIT_2_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x57, std::bind(&CPU::BIT_2_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x58, std::bind(&CPU::BIT_3_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x59, std::bind(&CPU::BIT_3_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x5A, std::bind(&CPU::BIT_3_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x5B, std::bind(&CPU::BIT_3_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x5C, std::bind(&CPU::BIT_3_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x5D, std::bind(&CPU::BIT_3_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x5E, std::bind(&CPU::BIT_3_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x5F, std::bind(&CPU::BIT_3_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x60, std::bind(&CPU::BIT_4_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x61, std::bind(&CPU::BIT_4_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x62, std::bind(&CPU::BIT_4_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x63, std::bind(&CPU::BIT_4_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x64, std::bind(&CPU::BIT_4_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x65, std::bind(&CPU::BIT_4_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x66, std::bind(&CPU::BIT_4_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x67, std::bind(&CPU::BIT_4_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x68, std::bind(&CPU::BIT_5_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x69, std::bind(&CPU::BIT_5_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x6A, std::bind(&CPU::BIT_5_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x6B, std::bind(&CPU::BIT_5_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x6C, std::bind(&CPU::BIT_5_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x6D, std::bind(&CPU::BIT_5_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x6E, std::bind(&CPU::BIT_5_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x6F, std::bind(&CPU::BIT_5_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x70, std::bind(&CPU::BIT_6_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x71, std::bind(&CPU::BIT_6_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x72, std::bind(&CPU::BIT_6_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x73, std::bind(&CPU::BIT_6_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x74, std::bind(&CPU::BIT_6_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x75, std::bind(&CPU::BIT_6_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x76, std::bind(&CPU::BIT_6_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x77, std::bind(&CPU::BIT_6_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x78, std::bind(&CPU::BIT_7_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x79, std::bind(&CPU::BIT_7_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x7A, std::bind(&CPU::BIT_7_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x7B, std::bind(&CPU::BIT_7_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x7C, std::bind(&CPU::BIT_7_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x7D, std::bind(&CPU::BIT_7_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x7E, std::bind(&CPU::BIT_7_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x7F, std::bind(&CPU::BIT_7_A, this)));
+
 }
 
 void CPU::SetZeroFlag()
@@ -2340,3 +2405,341 @@ void CPU::SRL_n(uint8_t& op)
     ClearHalfCarryFlag();
     ClearSubtractFlag();
 }
+
+void CPU::BIT_0_A()
+{
+    BIT_b_N(0, registers.a);
+}
+
+void CPU::BIT_0_B()
+{
+    BIT_b_N(0, registers.b);
+}
+
+void CPU::BIT_0_C()
+{
+    BIT_b_N(0, registers.c);
+}
+
+void CPU::BIT_0_D()
+{
+    BIT_b_N(0, registers.d);
+}
+
+void CPU::BIT_0_E()
+{
+    BIT_b_N(0, registers.e);
+}
+
+void CPU::BIT_0_H()
+{
+    BIT_b_N(0, registers.h);
+}
+
+void CPU::BIT_0_L()
+{
+    BIT_b_N(0, registers.l);
+}
+
+void CPU::BIT_0_VALUE_AT_HL()
+{
+    auto op = memory->Read(HL());
+    BIT_b_N(0, op);
+}
+
+void CPU::BIT_1_A()
+{
+    BIT_b_N(1, registers.a);
+}
+
+void CPU::BIT_1_B()
+{
+    BIT_b_N(1, registers.b);
+}
+
+void CPU::BIT_1_C()
+{
+    BIT_b_N(1, registers.c);
+}
+
+void CPU::BIT_1_D()
+{
+    BIT_b_N(1, registers.d);
+}
+
+void CPU::BIT_1_E()
+{
+    BIT_b_N(1, registers.e);
+}
+
+void CPU::BIT_1_H()
+{
+    BIT_b_N(1, registers.h);
+}
+
+void CPU::BIT_1_L()
+{
+    BIT_b_N(1, registers.l);
+}
+
+void CPU::BIT_1_VALUE_AT_HL()
+{
+    auto op = memory->Read(HL());
+    BIT_b_N(1, op);
+}
+
+void CPU::BIT_2_A()
+{
+    BIT_b_N(2, registers.a);
+}
+
+void CPU::BIT_2_B()
+{
+    BIT_b_N(2, registers.b);
+}
+
+void CPU::BIT_2_C()
+{
+    BIT_b_N(2, registers.c);
+}
+
+void CPU::BIT_2_D()
+{
+    BIT_b_N(2, registers.d);
+}
+
+void CPU::BIT_2_E()
+{
+    BIT_b_N(2, registers.e);
+}
+
+void CPU::BIT_2_H()
+{
+    BIT_b_N(2, registers.h);
+}
+
+void CPU::BIT_2_L()
+{
+    BIT_b_N(2, registers.l);
+}
+
+void CPU::BIT_2_VALUE_AT_HL()
+{
+    auto op = memory->Read(HL());
+    BIT_b_N(2, op);
+}
+
+void CPU::BIT_3_A()
+{
+    BIT_b_N(3, registers.a);
+}
+
+void CPU::BIT_3_B()
+{
+    BIT_b_N(3, registers.b);
+}
+
+void CPU::BIT_3_C()
+{
+    BIT_b_N(3, registers.c);
+}
+
+void CPU::BIT_3_D()
+{
+    BIT_b_N(3, registers.d);
+}
+
+void CPU::BIT_3_E()
+{
+    BIT_b_N(3, registers.e);
+}
+
+void CPU::BIT_3_H()
+{
+    BIT_b_N(3, registers.h);
+}
+
+void CPU::BIT_3_L()
+{
+    BIT_b_N(3, registers.l);
+}
+
+void CPU::BIT_3_VALUE_AT_HL()
+{
+    auto op = memory->Read(HL());
+    BIT_b_N(3, op);
+}
+
+void CPU::BIT_4_A()
+{
+    BIT_b_N(4, registers.a);
+}
+
+void CPU::BIT_4_B()
+{
+    BIT_b_N(4, registers.b);
+}
+
+void CPU::BIT_4_C()
+{
+    BIT_b_N(4, registers.c);
+}
+
+void CPU::BIT_4_D()
+{
+    BIT_b_N(4, registers.d);
+}
+
+void CPU::BIT_4_E()
+{
+    BIT_b_N(4, registers.e);
+}
+
+void CPU::BIT_4_H()
+{
+    BIT_b_N(4, registers.h);
+}
+
+void CPU::BIT_4_L()
+{
+    BIT_b_N(4, registers.l);
+}
+
+void CPU::BIT_4_VALUE_AT_HL()
+{
+    auto op = memory->Read(HL());
+    BIT_b_N(4, op);
+}
+
+void CPU::BIT_5_A()
+{
+    BIT_b_N(5, registers.a);
+}
+
+void CPU::BIT_5_B()
+{
+    BIT_b_N(5, registers.b);
+}
+
+void CPU::BIT_5_C()
+{
+    BIT_b_N(5, registers.c);
+}
+
+void CPU::BIT_5_D()
+{
+    BIT_b_N(5, registers.d);
+}
+
+void CPU::BIT_5_E()
+{
+    BIT_b_N(5, registers.e);
+}
+
+void CPU::BIT_5_H()
+{
+    BIT_b_N(5, registers.h);
+}
+
+void CPU::BIT_5_L()
+{
+    BIT_b_N(5, registers.l);
+}
+
+void CPU::BIT_5_VALUE_AT_HL()
+{
+    auto op = memory->Read(HL());
+    BIT_b_N(5, op);
+}
+
+void CPU::BIT_6_A()
+{
+    BIT_b_N(6, registers.a);
+}
+
+void CPU::BIT_6_B()
+{
+    BIT_b_N(6, registers.b);
+}
+
+void CPU::BIT_6_C()
+{
+    BIT_b_N(6, registers.c);
+}
+
+void CPU::BIT_6_D()
+{
+    BIT_b_N(6, registers.d);
+}
+
+void CPU::BIT_6_E()
+{
+    BIT_b_N(6, registers.e);
+}
+
+void CPU::BIT_6_H()
+{
+    BIT_b_N(6, registers.h);
+}
+
+void CPU::BIT_6_L()
+{
+    BIT_b_N(6, registers.l);
+}
+
+void CPU::BIT_6_VALUE_AT_HL()
+{
+    auto op = memory->Read(HL());
+    BIT_b_N(6, op);
+}
+
+void CPU::BIT_7_A()
+{
+    BIT_b_N(7, registers.a);
+}
+
+void CPU::BIT_7_B()
+{
+    BIT_b_N(7, registers.b);
+}
+
+void CPU::BIT_7_C()
+{
+    BIT_b_N(7, registers.c);
+}
+
+void CPU::BIT_7_D()
+{
+    BIT_b_N(7, registers.d);
+}
+
+void CPU::BIT_7_E()
+{
+    BIT_b_N(7, registers.e);
+}
+
+void CPU::BIT_7_H()
+{
+    BIT_b_N(7, registers.h);
+}
+
+void CPU::BIT_7_L()
+{
+    BIT_b_N(7, registers.l);
+}
+
+void CPU::BIT_7_VALUE_AT_HL()
+{
+    auto op = memory->Read(HL());
+    BIT_b_N(7, op);
+}
+
+void CPU::BIT_b_N(uint8_t bitPos, uint8_t &op)
+{
+    assert(bitPos <= 7);
+    auto s = op >> bitPos;
+    if((s & 0b00000001) == 0b00000000) SetZeroFlag();
+    SetHalfCarryFlag();
+    ClearSubtractFlag();
+}
+
