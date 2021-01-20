@@ -583,6 +583,13 @@ private:
     void RST_30H();
     void RST_38H();
 
+    void RET();
+    void RET_NZ();
+    void RET_Z();
+    void RET_NC();
+    void RET_C();
+    void RETI();
+
     Registers registers{};
     Memory* memory;
     InterruptState interruptState;

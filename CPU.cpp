@@ -131,6 +131,7 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0xBD, std::bind(&CPU::CP_L, this)));
     dispatchTable.insert(std::make_pair(0xBE, std::bind(&CPU::CP_HL, this)));
     dispatchTable.insert(std::make_pair(0xBF, std::bind(&CPU::CP_A, this)));
+    dispatchTable.insert(std::make_pair(0xC0, std::bind(&CPU::RET_NZ, this)));
     dispatchTable.insert(std::make_pair(0xC1, std::bind(&CPU::POP_BC, this)));
     dispatchTable.insert(std::make_pair(0xC2, std::bind(&CPU::JP_NZ_nn, this)));
     dispatchTable.insert(std::make_pair(0xC3, std::bind(&CPU::JP_nn, this)));
@@ -138,18 +139,23 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0xC5, std::bind(&CPU::PUSH_BC, this)));
     dispatchTable.insert(std::make_pair(0xC6, std::bind(&CPU::ADD_Immediate, this)));
     dispatchTable.insert(std::make_pair(0xC7, std::bind(&CPU::RST_00H, this)));
+    dispatchTable.insert(std::make_pair(0xC8, std::bind(&CPU::RET_Z, this)));
+    dispatchTable.insert(std::make_pair(0xC9, std::bind(&CPU::RET, this)));
     dispatchTable.insert(std::make_pair(0xCA, std::bind(&CPU::JP_Z_nn, this)));
     dispatchTable.insert(std::make_pair(0xCB, std::bind(&CPU::HandleExtendedInstruction, this)));
     dispatchTable.insert(std::make_pair(0xCC, std::bind(&CPU::CALL_Z_nn, this)));
     dispatchTable.insert(std::make_pair(0xCD, std::bind(&CPU::CALL_nn, this)));
     dispatchTable.insert(std::make_pair(0xCE, std::bind(&CPU::ADC_Immediate, this)));
     dispatchTable.insert(std::make_pair(0xCF, std::bind(&CPU::RST_08H, this)));
+    dispatchTable.insert(std::make_pair(0xD0, std::bind(&CPU::RET_NC, this)));
     dispatchTable.insert(std::make_pair(0xD1, std::bind(&CPU::POP_DE, this)));
     dispatchTable.insert(std::make_pair(0xD2, std::bind(&CPU::JP_NC_nn, this)));
     dispatchTable.insert(std::make_pair(0xD4, std::bind(&CPU::CALL_NC_nn, this)));
     dispatchTable.insert(std::make_pair(0xD5, std::bind(&CPU::PUSH_DE, this)));
     dispatchTable.insert(std::make_pair(0xD6, std::bind(&CPU::SUB_Immediate, this)));
     dispatchTable.insert(std::make_pair(0xD7, std::bind(&CPU::RST_10H, this)));
+    dispatchTable.insert(std::make_pair(0xD8, std::bind(&CPU::RET_C, this)));
+    dispatchTable.insert(std::make_pair(0xD9, std::bind(&CPU::RETI, this)));
     dispatchTable.insert(std::make_pair(0xDA, std::bind(&CPU::JP_C_nn, this)));
     dispatchTable.insert(std::make_pair(0xDC, std::bind(&CPU::CALL_C_nn, this)));
     dispatchTable.insert(std::make_pair(0xDE, std::bind(&CPU::SBC_Immediate, this)));
@@ -3839,6 +3845,67 @@ void CPU::RST_38H()
     memory->Write(registers.sp--, lsb);
 
     registers.pc = 0x0038;
+}
+
+void CPU::RET()
+{
+    auto lsb = memory->Read(registers.sp++);
+    auto msb = memory->Read(registers.sp++);
+
+    registers.pc = (uint16_t)(msb << 8 | lsb);
+}
+
+void CPU::RET_NZ()
+{
+    if(!IsZeroFlagSet())
+    {
+        auto lsb = memory->Read(registers.sp++);
+        auto msb = memory->Read(registers.sp++);
+
+        registers.pc = (uint16_t)(msb << 8 | lsb);
+    }
+}
+
+void CPU::RET_Z()
+{
+    if(IsZeroFlagSet())
+    {
+        auto lsb = memory->Read(registers.sp++);
+        auto msb = memory->Read(registers.sp++);
+
+        registers.pc = (uint16_t)(msb << 8 | lsb);
+    }
+}
+
+void CPU::RET_NC()
+{
+    if(!IsCarryFlagSet())
+    {
+        auto lsb = memory->Read(registers.sp++);
+        auto msb = memory->Read(registers.sp++);
+
+        registers.pc = (uint16_t)(msb << 8 | lsb);
+    }
+}
+
+void CPU::RET_C()
+{
+    if(IsCarryFlagSet())
+    {
+        auto lsb = memory->Read(registers.sp++);
+        auto msb = memory->Read(registers.sp++);
+
+        registers.pc = (uint16_t)(msb << 8 | lsb);
+    }
+}
+
+void CPU::RETI()
+{
+    auto lsb = memory->Read(registers.sp++);
+    auto msb = memory->Read(registers.sp++);
+
+    registers.pc = (uint16_t)(msb << 8 | lsb);
+    interruptState = InterruptState::Enabled;
 }
 
 
