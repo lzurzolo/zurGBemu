@@ -198,6 +198,14 @@ void CPU::PopulateExtendedInstructionDispatchTable()
     extendedInstructionDispatchTable.insert(std::make_pair(0x35, std::bind(&CPU::SWAP_L, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x36, std::bind(&CPU::SWAP_VALUE_AT_HL, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x37, std::bind(&CPU::SWAP_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x38, std::bind(&CPU::SRL_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x39, std::bind(&CPU::SRL_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x3A, std::bind(&CPU::SRL_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x3B, std::bind(&CPU::SRL_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x3C, std::bind(&CPU::SRL_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x3D, std::bind(&CPU::SRL_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x3E, std::bind(&CPU::SRL_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x3F, std::bind(&CPU::SRL_A, this)));
 }
 
 void CPU::SetZeroFlag()
@@ -2242,6 +2250,8 @@ void CPU::SRA_VALUE_AT_HL()
 
     val >>= 1;
     val |= leftbit;
+
+    memory->Write(HL(), val);
 }
 
 void CPU::SRA_n(uint8_t& op)
@@ -2254,6 +2264,76 @@ void CPU::SRA_n(uint8_t& op)
 
     op >>= 1;
     op |= leftbit;
+
+    if(op == 0x0) SetZeroFlag();
+
+    ClearHalfCarryFlag();
+    ClearSubtractFlag();
+}
+
+void CPU::SRL_A()
+{
+    SRL_n(registers.a);
+}
+
+void CPU::SRL_B()
+{
+    SRL_n(registers.b);
+}
+
+void CPU::SRL_C()
+{
+    SRL_n(registers.c);
+}
+
+void CPU::SRL_D()
+{
+    SRL_n(registers.e);
+}
+
+void CPU::SRL_E()
+{
+    SRL_n(registers.e);
+}
+
+void CPU::SRL_H()
+{
+    SRL_n(registers.h);
+}
+
+void CPU::SRL_L()
+{
+    SRL_n(registers.l);
+}
+
+void CPU::SRL_VALUE_AT_HL()
+{
+    auto val = memory->Read(HL());
+    auto rightbit = val & 0b00000001;
+
+    if(rightbit == 0x0) ClearCarryFlag();
+    else SetCarryFlag();
+
+    val >>= 1;
+    val &= 0b01111111;
+
+    if(val == 0x0) SetZeroFlag();
+
+    ClearHalfCarryFlag();
+    ClearSubtractFlag();
+
+    memory->Write(HL(), val);
+}
+
+void CPU::SRL_n(uint8_t& op)
+{
+    auto rightbit = op & 0b00000001;
+
+    if(rightbit == 0x0) ClearCarryFlag();
+    else SetCarryFlag();
+
+    op >>= 1;
+    op &= 0b01111111;
 
     if(op == 0x0) SetZeroFlag();
 

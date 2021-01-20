@@ -323,6 +323,16 @@ private:
     void SRA_VALUE_AT_HL();
     void SRA_n(uint8_t& op);
 
+    void SRL_A();
+    void SRL_B();
+    void SRL_C();
+    void SRL_D();
+    void SRL_E();
+    void SRL_H();
+    void SRL_L();
+    void SRL_VALUE_AT_HL();
+    void SRL_n(uint8_t& op);
+
     Registers registers{};
     Memory* memory;
     InterruptState interruptState;
