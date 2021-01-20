@@ -182,6 +182,14 @@ void CPU::PopulateExtendedInstructionDispatchTable()
     extendedInstructionDispatchTable.insert(std::make_pair(0x25, std::bind(&CPU::SLA_L, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x26, std::bind(&CPU::SLA_VALUE_AT_HL, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x27, std::bind(&CPU::SLA_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x28, std::bind(&CPU::SRA_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x29, std::bind(&CPU::SRA_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x2A, std::bind(&CPU::SRA_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x2B, std::bind(&CPU::SRA_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x2C, std::bind(&CPU::SRA_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x2D, std::bind(&CPU::SRA_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x2E, std::bind(&CPU::SRA_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0x2F, std::bind(&CPU::SRA_A, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x30, std::bind(&CPU::SWAP_B, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x31, std::bind(&CPU::SWAP_C, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x32, std::bind(&CPU::SWAP_D, this)));
@@ -2164,6 +2172,7 @@ void CPU::SLA_VALUE_AT_HL()
     leftbit >>= 7;
     if(leftbit == 0x0) ClearCarryFlag();
     else SetCarryFlag();
+    val <<= 1;
     val &= 0b11111110;
 
     ClearHalfCarryFlag();
@@ -2179,9 +2188,75 @@ void CPU::SLA_n(uint8_t& op)
     leftbit >>= 7;
     if(leftbit == 0x0) ClearCarryFlag();
     else SetCarryFlag();
+    op <<= 1;
     op &= 0b11111110;
 
     ClearHalfCarryFlag();
     ClearSubtractFlag();
     if(op == 0x0) SetZeroFlag();
+}
+
+void CPU::SRA_A()
+{
+    SRA_n(registers.a);
+}
+
+void CPU::SRA_B()
+{
+    SRA_n(registers.b);
+}
+
+void CPU::SRA_C()
+{
+    SRA_n(registers.c);
+}
+
+void CPU::SRA_D()
+{
+    SRA_n(registers.d);
+}
+
+void CPU::SRA_E()
+{
+    SRA_n(registers.e);
+}
+
+void CPU::SRA_H()
+{
+    SRA_n(registers.h);
+}
+
+void CPU::SRA_L()
+{
+    SRA_n(registers.l);
+}
+
+void CPU::SRA_VALUE_AT_HL()
+{
+    auto val = memory->Read(HL());
+    auto leftbit = val & 0b10000000;
+    auto rightbit = val & 0b00000001;
+
+    if(rightbit == 0x0) ClearCarryFlag();
+    else SetCarryFlag();
+
+    val >>= 1;
+    val |= leftbit;
+}
+
+void CPU::SRA_n(uint8_t& op)
+{
+    auto leftbit = op & 0b10000000;
+    auto rightbit = op & 0b00000001;
+
+    if(rightbit == 0x0) ClearCarryFlag();
+    else SetCarryFlag();
+
+    op >>= 1;
+    op |= leftbit;
+
+    if(op == 0x0) SetZeroFlag();
+
+    ClearHalfCarryFlag();
+    ClearSubtractFlag();
 }
