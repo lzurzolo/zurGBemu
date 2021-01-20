@@ -407,6 +407,80 @@ private:
 
     void BIT_b_N(uint8_t bitPos, uint8_t& op);
 
+    void SET_0_A();
+    void SET_0_B();
+    void SET_0_C();
+    void SET_0_D();
+    void SET_0_E();
+    void SET_0_H();
+    void SET_0_L();
+    void SET_0_VALUE_AT_HL();
+
+    void SET_1_A();
+    void SET_1_B();
+    void SET_1_C();
+    void SET_1_D();
+    void SET_1_E();
+    void SET_1_H();
+    void SET_1_L();
+    void SET_1_VALUE_AT_HL();
+
+    void SET_2_A();
+    void SET_2_B();
+    void SET_2_C();
+    void SET_2_D();
+    void SET_2_E();
+    void SET_2_H();
+    void SET_2_L();
+    void SET_2_VALUE_AT_HL();
+
+    void SET_3_A();
+    void SET_3_B();
+    void SET_3_C();
+    void SET_3_D();
+    void SET_3_E();
+    void SET_3_H();
+    void SET_3_L();
+    void SET_3_VALUE_AT_HL();
+
+    void SET_4_A();
+    void SET_4_B();
+    void SET_4_C();
+    void SET_4_D();
+    void SET_4_E();
+    void SET_4_H();
+    void SET_4_L();
+    void SET_4_VALUE_AT_HL();
+
+    void SET_5_A();
+    void SET_5_B();
+    void SET_5_C();
+    void SET_5_D();
+    void SET_5_E();
+    void SET_5_H();
+    void SET_5_L();
+    void SET_5_VALUE_AT_HL();
+
+    void SET_6_A();
+    void SET_6_B();
+    void SET_6_C();
+    void SET_6_D();
+    void SET_6_E();
+    void SET_6_H();
+    void SET_6_L();
+    void SET_6_VALUE_AT_HL();
+
+    void SET_7_A();
+    void SET_7_B();
+    void SET_7_C();
+    void SET_7_D();
+    void SET_7_E();
+    void SET_7_H();
+    void SET_7_L();
+    void SET_7_VALUE_AT_HL();
+
+    void SET_b_N(uint8_t bitPos, uint8_t& op);
+
     Registers registers{};
     Memory* memory;
     InterruptState interruptState;

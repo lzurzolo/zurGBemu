@@ -270,6 +270,70 @@ void CPU::PopulateExtendedInstructionDispatchTable()
     extendedInstructionDispatchTable.insert(std::make_pair(0x7D, std::bind(&CPU::BIT_7_L, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x7E, std::bind(&CPU::BIT_7_VALUE_AT_HL, this)));
     extendedInstructionDispatchTable.insert(std::make_pair(0x7F, std::bind(&CPU::BIT_7_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xC0, std::bind(&CPU::SET_0_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xC1, std::bind(&CPU::SET_0_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xC2, std::bind(&CPU::SET_0_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xC3, std::bind(&CPU::SET_0_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xC4, std::bind(&CPU::SET_0_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xC5, std::bind(&CPU::SET_0_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xC6, std::bind(&CPU::SET_0_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xC7, std::bind(&CPU::SET_0_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xC8, std::bind(&CPU::SET_1_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xC9, std::bind(&CPU::SET_1_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xCA, std::bind(&CPU::SET_1_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xCB, std::bind(&CPU::SET_1_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xCC, std::bind(&CPU::SET_1_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xCD, std::bind(&CPU::SET_1_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xCE, std::bind(&CPU::SET_1_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xCF, std::bind(&CPU::SET_1_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xD0, std::bind(&CPU::SET_2_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xD1, std::bind(&CPU::SET_2_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xD2, std::bind(&CPU::SET_2_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xD3, std::bind(&CPU::SET_2_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xD4, std::bind(&CPU::SET_2_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xD5, std::bind(&CPU::SET_2_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xD6, std::bind(&CPU::SET_2_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xD7, std::bind(&CPU::SET_2_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xD8, std::bind(&CPU::SET_3_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xD9, std::bind(&CPU::SET_3_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xDA, std::bind(&CPU::SET_3_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xDB, std::bind(&CPU::SET_3_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xDC, std::bind(&CPU::SET_3_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xDD, std::bind(&CPU::SET_3_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xDE, std::bind(&CPU::SET_3_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xDF, std::bind(&CPU::SET_3_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xE0, std::bind(&CPU::SET_4_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xE1, std::bind(&CPU::SET_4_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xE2, std::bind(&CPU::SET_4_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xE3, std::bind(&CPU::SET_4_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xE4, std::bind(&CPU::SET_4_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xE5, std::bind(&CPU::SET_4_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xE6, std::bind(&CPU::SET_4_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xE7, std::bind(&CPU::SET_4_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xE8, std::bind(&CPU::SET_5_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xE9, std::bind(&CPU::SET_5_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xEA, std::bind(&CPU::SET_5_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xEB, std::bind(&CPU::SET_5_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xEC, std::bind(&CPU::SET_5_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xED, std::bind(&CPU::SET_5_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xEE, std::bind(&CPU::SET_5_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xEF, std::bind(&CPU::SET_5_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xF0, std::bind(&CPU::SET_6_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xF1, std::bind(&CPU::SET_6_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xF2, std::bind(&CPU::SET_6_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xF3, std::bind(&CPU::SET_6_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xF4, std::bind(&CPU::SET_6_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xF5, std::bind(&CPU::SET_6_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xF6, std::bind(&CPU::SET_6_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xF7, std::bind(&CPU::SET_6_A, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xF8, std::bind(&CPU::SET_7_B, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xF9, std::bind(&CPU::SET_7_C, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xFA, std::bind(&CPU::SET_7_D, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xFB, std::bind(&CPU::SET_7_E, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xFC, std::bind(&CPU::SET_7_H, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xFD, std::bind(&CPU::SET_7_L, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xFE, std::bind(&CPU::SET_7_VALUE_AT_HL, this)));
+    extendedInstructionDispatchTable.insert(std::make_pair(0xFF, std::bind(&CPU::SET_7_A, this)));
 
 }
 
@@ -2742,4 +2806,355 @@ void CPU::BIT_b_N(uint8_t bitPos, uint8_t &op)
     SetHalfCarryFlag();
     ClearSubtractFlag();
 }
+
+void CPU::SET_0_A()
+{
+    SET_b_N(0, registers.a);
+}
+
+void CPU::SET_0_B()
+{
+    SET_b_N(0, registers.b);
+}
+
+void CPU::SET_0_C()
+{
+    SET_b_N(0, registers.c);
+}
+
+void CPU::SET_0_D()
+{
+    SET_b_N(0, registers.d);
+}
+
+void CPU::SET_0_E()
+{
+    SET_b_N(0, registers.e);
+}
+
+void CPU::SET_0_H()
+{
+    SET_b_N(0, registers.h);
+}
+
+void CPU::SET_0_L()
+{
+    SET_b_N(0, registers.l);
+}
+
+void CPU::SET_0_VALUE_AT_HL()
+{
+    auto val = memory->Read((HL()));
+    val |= 0b00000001;
+    memory->Write(HL(), val);
+}
+
+void CPU::SET_1_A()
+{
+    SET_b_N(1, registers.a);
+}
+
+void CPU::SET_1_B()
+{
+    SET_b_N(1, registers.b);
+}
+
+void CPU::SET_1_C()
+{
+    SET_b_N(1, registers.c);
+}
+
+void CPU::SET_1_D()
+{
+    SET_b_N(1, registers.d);
+}
+
+void CPU::SET_1_E()
+{
+    SET_b_N(1, registers.e);
+}
+
+void CPU::SET_1_H()
+{
+    SET_b_N(1, registers.h);
+}
+
+void CPU::SET_1_L()
+{
+    SET_b_N(1, registers.l);
+}
+
+void CPU::SET_1_VALUE_AT_HL()
+{
+    auto val = memory->Read((HL()));
+    val |= 0b00000010;
+    memory->Write(HL(), val);
+}
+
+void CPU::SET_2_A()
+{
+    SET_b_N(2, registers.a);
+}
+
+void CPU::SET_2_B()
+{
+    SET_b_N(2, registers.b);
+}
+
+void CPU::SET_2_C()
+{
+    SET_b_N(2, registers.c);
+}
+
+void CPU::SET_2_D()
+{
+    SET_b_N(2, registers.d);
+}
+
+void CPU::SET_2_E()
+{
+    SET_b_N(2, registers.e);
+}
+
+void CPU::SET_2_H()
+{
+    SET_b_N(2, registers.h);
+}
+
+void CPU::SET_2_L()
+{
+    SET_b_N(2, registers.l);
+}
+
+void CPU::SET_2_VALUE_AT_HL()
+{
+    auto val = memory->Read((HL()));
+    val |= 0b00000100;
+    memory->Write(HL(), val);
+}
+
+void CPU::SET_3_A()
+{
+    SET_b_N(3, registers.a);
+}
+
+void CPU::SET_3_B()
+{
+    SET_b_N(3, registers.b);
+}
+
+void CPU::SET_3_C()
+{
+    SET_b_N(3, registers.c);
+}
+
+void CPU::SET_3_D()
+{
+    SET_b_N(3, registers.d);
+}
+
+void CPU::SET_3_E()
+{
+    SET_b_N(3, registers.e);
+}
+
+void CPU::SET_3_H()
+{
+    SET_b_N(3, registers.h);
+}
+
+void CPU::SET_3_L()
+{
+    SET_b_N(3, registers.l);
+}
+
+void CPU::SET_3_VALUE_AT_HL()
+{
+    auto val = memory->Read((HL()));
+    val |= 0b00001000;
+    memory->Write(HL(), val);
+}
+
+void CPU::SET_4_A()
+{
+    SET_b_N(4, registers.a);
+}
+
+void CPU::SET_4_B()
+{
+    SET_b_N(4, registers.b);
+}
+
+void CPU::SET_4_C()
+{
+    SET_b_N(4, registers.c);
+}
+
+void CPU::SET_4_D()
+{
+    SET_b_N(4, registers.d);
+}
+
+void CPU::SET_4_E()
+{
+    SET_b_N(4, registers.e);
+}
+
+void CPU::SET_4_H()
+{
+    SET_b_N(4, registers.h);
+}
+
+void CPU::SET_4_L()
+{
+    SET_b_N(4, registers.l);
+}
+
+void CPU::SET_4_VALUE_AT_HL()
+{
+    auto val = memory->Read((HL()));
+    val |= 0b00010000;
+    memory->Write(HL(), val);
+}
+
+void CPU::SET_5_A()
+{
+    SET_b_N(5, registers.a);
+}
+
+void CPU::SET_5_B()
+{
+    SET_b_N(5, registers.b);
+}
+
+void CPU::SET_5_C()
+{
+    SET_b_N(5, registers.c);
+}
+
+void CPU::SET_5_D()
+{
+    SET_b_N(5, registers.d);
+}
+
+void CPU::SET_5_E()
+{
+    SET_b_N(5, registers.e);
+}
+
+void CPU::SET_5_H()
+{
+    SET_b_N(5, registers.h);
+}
+
+void CPU::SET_5_L()
+{
+    SET_b_N(5, registers.l);
+}
+
+void CPU::SET_5_VALUE_AT_HL()
+{
+    auto val = memory->Read((HL()));
+    val |= 0b00100000;
+    memory->Write(HL(), val);
+}
+
+void CPU::SET_6_A()
+{
+    SET_b_N(6, registers.a);
+}
+
+void CPU::SET_6_B()
+{
+    SET_b_N(6, registers.b);
+}
+
+void CPU::SET_6_C()
+{
+    SET_b_N(6, registers.c);
+}
+
+void CPU::SET_6_D()
+{
+    SET_b_N(6, registers.d);
+}
+
+void CPU::SET_6_E()
+{
+    SET_b_N(6, registers.e);
+}
+
+void CPU::SET_6_H()
+{
+    SET_b_N(6, registers.h);
+}
+
+void CPU::SET_6_L()
+{
+    SET_b_N(6, registers.l);
+}
+
+void CPU::SET_6_VALUE_AT_HL()
+{
+    auto val = memory->Read((HL()));
+    val |= 0b01000000;
+    memory->Write(HL(), val);
+}
+
+void CPU::SET_7_A()
+{
+    SET_b_N(7, registers.a);
+}
+
+void CPU::SET_7_B()
+{
+    SET_b_N(7, registers.b);
+}
+
+void CPU::SET_7_C()
+{
+    SET_b_N(7, registers.c);
+}
+
+void CPU::SET_7_D()
+{
+    SET_b_N(7, registers.d);
+}
+
+void CPU::SET_7_E()
+{
+    SET_b_N(7, registers.e);
+}
+
+void CPU::SET_7_H()
+{
+    SET_b_N(7, registers.h);
+}
+
+void CPU::SET_7_L()
+{
+    SET_b_N(7, registers.l);
+}
+
+void CPU::SET_7_VALUE_AT_HL()
+{
+    auto val = memory->Read((HL()));
+    val |= 0b10000000;
+    memory->Write(HL(), val);
+}
+
+void CPU::SET_b_N(uint8_t bitPos, uint8_t &op)
+{
+    assert(bitPos >= 0 && bitPos <= 7);
+    if(bitPos == 0) op |= 0b00000001;
+    else if(bitPos == 1) op |= 0b00000010;
+    else if(bitPos == 2) op |= 0b00000100;
+    else if(bitPos == 3) op |= 0b00001000;
+    else if(bitPos == 4) op |= 0b00010000;
+    else if(bitPos == 5) op |= 0b00100000;
+    else if(bitPos == 6) op |= 0b01000000;
+    else if(bitPos == 7) op |= 0b10000000;
+}
+
+
 
