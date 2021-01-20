@@ -87,6 +87,20 @@ private:
     void HandleExtendedInstruction();
 
     void NOP();
+
+    void LD_A_n();
+    void LD_B_n();
+    void LD_C_n();
+    void LD_D_n();
+    void LD_E_n();
+    void LD_H_n();
+    void LD_L_n();
+    void LD_r_n(uint8_t& op);
+
+
+
+
+
     void LDrn(uint8_t& r);
     void LDrr(uint8_t& r1, uint8_t& r2);
     void LDrHL(uint8_t& r);

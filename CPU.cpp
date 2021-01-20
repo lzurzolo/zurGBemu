@@ -28,15 +28,18 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0x03, std::bind(&CPU::INC_BC, this)));
     dispatchTable.insert(std::make_pair(0x04, std::bind(&CPU::INC_B, this)));
     dispatchTable.insert(std::make_pair(0x05, std::bind(&CPU::DEC_B, this)));
+    dispatchTable.insert(std::make_pair(0x06, std::bind(&CPU::LD_B_n, this)));
     dispatchTable.insert(std::make_pair(0x07, std::bind(&CPU::RLCA, this)));
     dispatchTable.insert(std::make_pair(0x09, std::bind(&CPU::ADD_BC_TO_HL, this)));
     dispatchTable.insert(std::make_pair(0x0B, std::bind(&CPU::DEC_BC, this)));
     dispatchTable.insert(std::make_pair(0x0C, std::bind(&CPU::INC_C, this)));
     dispatchTable.insert(std::make_pair(0x0D, std::bind(&CPU::DEC_C, this)));
+    dispatchTable.insert(std::make_pair(0x0E, std::bind(&CPU::LD_C_n, this)));
     dispatchTable.insert(std::make_pair(0x0F, std::bind(&CPU::RRCA, this)));
     dispatchTable.insert(std::make_pair(0x13, std::bind(&CPU::INC_DE, this)));
     dispatchTable.insert(std::make_pair(0x14, std::bind(&CPU::INC_D, this)));
     dispatchTable.insert(std::make_pair(0x15, std::bind(&CPU::DEC_D, this)));
+    dispatchTable.insert(std::make_pair(0x16, std::bind(&CPU::LD_D_n, this)));
     dispatchTable.insert(std::make_pair(0x17, std::bind(&CPU::RLA, this)));
     dispatchTable.insert(std::make_pair(0x18, std::bind(&CPU::JR_n, this)));
     dispatchTable.insert(std::make_pair(0x19, std::bind(&CPU::ADD_DE_TO_HL, this)));
@@ -44,9 +47,11 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0x1B, std::bind(&CPU::DEC_DE, this)));
     dispatchTable.insert(std::make_pair(0x1C, std::bind(&CPU::INC_E, this)));
     dispatchTable.insert(std::make_pair(0x1D, std::bind(&CPU::DEC_E, this)));
+    dispatchTable.insert(std::make_pair(0x1E, std::bind(&CPU::LD_E_n, this)));
     dispatchTable.insert(std::make_pair(0x1F, std::bind(&CPU::RRA, this)));
     dispatchTable.insert(std::make_pair(0x2B, std::bind(&CPU::DEC_HL, this)));
     dispatchTable.insert(std::make_pair(0x23, std::bind(&CPU::INC_HL, this)));
+    dispatchTable.insert(std::make_pair(0x26, std::bind(&CPU::LD_H_n, this)));
     dispatchTable.insert(std::make_pair(0x27, std::bind(&CPU::DAA, this)));
     dispatchTable.insert(std::make_pair(0x28, std::bind(&CPU::JR_Z_n, this)));
     dispatchTable.insert(std::make_pair(0x29, std::bind(&CPU::ADD_HL_TO_HL, this)));
@@ -54,6 +59,7 @@ void CPU::PopulateDispatchTable()
     dispatchTable.insert(std::make_pair(0x25, std::bind(&CPU::DEC_H, this)));
     dispatchTable.insert(std::make_pair(0x2C, std::bind(&CPU::INC_L, this)));
     dispatchTable.insert(std::make_pair(0x2D, std::bind(&CPU::DEC_L, this)));
+    dispatchTable.insert(std::make_pair(0x2E, std::bind(&CPU::LD_L_n, this)));
     dispatchTable.insert(std::make_pair(0x2F, std::bind(&CPU::CPL, this)));
     dispatchTable.insert(std::make_pair(0x30, std::bind(&CPU::JR_NC_n, this)));
     dispatchTable.insert(std::make_pair(0x33, std::bind(&CPU::INC_SP, this)));
@@ -736,6 +742,46 @@ void CPU::NOP()
 {
     DEBUG("0x00 NOP");
     DEBUG(" ");
+}
+
+void CPU::LD_A_n()
+{
+    LD_r_n(registers.a);
+}
+
+void CPU::LD_B_n()
+{
+    LD_r_n(registers.b);
+}
+
+void CPU::LD_C_n()
+{
+    LD_r_n(registers.c);
+}
+
+void CPU::LD_D_n()
+{
+    LD_r_n(registers.d);
+}
+
+void CPU::LD_E_n()
+{
+    LD_r_n(registers.e);
+}
+
+void CPU::LD_H_n()
+{
+    LD_r_n(registers.h);
+}
+
+void CPU::LD_L_n()
+{
+    LD_r_n(registers.l);
+}
+
+void CPU::LD_r_n(uint8_t& op)
+{
+    op = memory->Read(registers.pc);
 }
 
 void CPU::LDrn(uint8_t &r)
